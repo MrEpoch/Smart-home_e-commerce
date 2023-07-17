@@ -3,7 +3,7 @@ import React, { Suspense, lazy } from "react";
 import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import Logo from "../assets/Logo.png";
 import { Link } from "react-router-dom";
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import PersonIcon from '@mui/icons-material/Person';
 
 const Cart = lazy(() => import("./cart-components/cart"));
 
@@ -12,16 +12,16 @@ export default function Header(): React.ReactElement {
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container className="navbar__container">
         <Navbar.Brand className="navbar__brand">
-            <Link to="/">
-                <img src={Logo} alt="Logo" width="50" height="50"/>
+            <Link id="brand_name" to="/">
+                SmartUp
             </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Link to="/">Home</Link>
-            <Link to="/shop">Shop</Link>
-            <NavDropdown title="More" id="collasible-nav-dropdown">
+            <Link className="navbar__links" to="/">Home</Link>
+            <Link className="navbar__links" to="/shop">Shop</Link>
+            <NavDropdown title="" id="collasible-nav-dropdown">
               <NavDropdown.Item>
                 <Link to="/about">
                     About
@@ -36,7 +36,9 @@ export default function Header(): React.ReactElement {
           </Nav>
           <Nav>
             <Link to="/userpage">
-                <AccountBoxIcon />
+                <button className="btn button_box btn-primary">
+                    <PersonIcon />
+                </button>
             </Link>
             <Suspense fallback={<div>Loading...</div>}>
                 <Cart />

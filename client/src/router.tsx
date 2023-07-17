@@ -1,9 +1,11 @@
 import { CircularProgress } from "@mui/material";
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ChildrenProp } from "./Types";
-import Header from "./Pages/Header";
-import Footer from "./Pages/Footer";
+
+const Footer = lazy(() => import("./Pages/Footer"));
+const Header = lazy(() => import("./Pages/Header"));
+const Home__page = lazy(() => import("./Pages/Home__page"));
 
 function Header_Footer({ children }: ChildrenProp): React.JSX.Element {
   return (
@@ -25,7 +27,10 @@ export default function Router(): React.JSX.Element {
       }
     >
       <Routes>
-        <Route path="/" element={<Header_Footer>Home</Header_Footer>} />
+        <Route path="/" element={
+            <Header_Footer>
+                <Home__page />
+            </Header_Footer>} />
         <Route path="/shop" element={<Header_Footer>shop</Header_Footer>} />
         <Route path="/about" element={<Header_Footer>about</Header_Footer>} />
         <Route

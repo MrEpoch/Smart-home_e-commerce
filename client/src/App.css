@@ -1,0 +1,14 @@
+.button_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 40px;
+}
+
+.pages_loading {
+    width: 100vh;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

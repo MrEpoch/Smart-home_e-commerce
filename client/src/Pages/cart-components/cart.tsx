@@ -1,3 +1,4 @@
+import "./cart.css";
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -17,11 +18,11 @@ export default function Cart(): React.ReactNode {
 
     return (
         <>
-            <button onClick={() => setShow(true)} type="button" className="btn btn-primary" >
+            <button onClick={() => setShow(true)} type="button" className="btn button_box btn-primary" >
                 <ShoppingCartIcon />
             </button>
             {loading && <div>loading...</div>}
-            <Modal show={show} onHide={handle_close} role="dialog">
+            <Modal className="cart_modal" show={show} onHide={handle_close} role="dialog">
                 <Modal.Header closeButton>
                     <Modal.Title>Cart items</Modal.Title>
                 </Modal.Header>

@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
 .navbar__container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
 }
 
 .navbar-nav > *{
@@ -10,25 +13,57 @@
     margin: 0 1rem;
 }
 
-.navbar__container a {
-    color: #000;
+@media (max-width: 992px) {
+    .navbar-nav > *{
+        margin-top: 1rem;
+    }
+}
+
+.navbar__links {
+     color: #000;
     text-decoration: none;
     font-size: 1.2rem;
     font-weight: 100;
     transition: all 0.3s ease-in-out;
 }
 
-.navbar__container a:hover {
-    color: #10d3f9;
+.navbar__links:hover {
+    transition: all 0.3s ease-in-out;
+    transform: translateY(2px);
 }
 
-.navbar__container a > a {
-    margin: 0 0;
-    padding: unset;
+.navbar__container a {
+    text-decoration: none;
+    color: #000;
 }
 
-.navbar__brand img {
+.navbar__container a:active {
+    background-color: unset;
+}
+
+.navbar__brand {
+    display: flex;
+    align-items: center;
     width: 3rem;
+    color: var(--main-color);
     height: 3rem;
-    margin-right: 1rem;
+    margin-right: 3rem;
+}
+
+#brand_name {
+    font-family: 'Anton', sans-serif;
+    color: var(--main-color);
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    text-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+#brand_name:hover {
+    transition: all 0.3s ease-in-out;
+    transform: scale(1.05);
+}
+
+.navbar-toggler {
+    box-shadow: none!important;
 }
