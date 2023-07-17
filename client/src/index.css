@@ -1,0 +1,56 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --main-color: ##10D3F9;
+  --system-color: #0f1319;
+  --dark-theme: #212121;
+  --dark-theme-hover: #3a3a3a;
+  --dark-theme-light: #1b1b1b;
+  --dark-theme-dark: #0f0f0f;
+}
+
+html {
+  line-height: 1.15;
+  height: 100%;
+  webkit-text-size-adjust: 100%;
+  tab-size: 4;
+  overflow-y: scroll;
+  background-color: var(--system-color);
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f1f1f1;
+  height: auto;
+}
+
+#root {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
+}
+
+#root > * {
+  width: 100%;
+}
+
+body::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--main-color);
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #333;
+}
+
