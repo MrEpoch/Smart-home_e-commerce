@@ -10,10 +10,72 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum role {
+  admin
+  user
+}
+
 model User {
   id              String           @id @default(uuid())
   username        String           @unique @db.VarChar(30)
   email           String           @unique
   password        String           @unique
   createdAt       DateTime         @default(now())
+
+  orders          Order[]
+}
+
+model refresh_token {
+    id              String           @id @default(uuid())
+    token           String           @unique
+    createdAt       DateTime         @default(now())
+    belongsToId     String
+
+    valid           Boolean          @default(true)
+}
+
+enum categories {
+    locks
+    lights
+    cameras
+    doorbells
+    thermostats
+    new
+}
+
+model Product {
+    id                  String          @id @default(uuid())
+    name                String
+    description         String
+    long_description    String
+    price               String
+    image               String
+    category            categories      @default(new)
+    countInStock        String
+    rating              Float
+    numReviews          Int
+    createdAt           DateTime        @default(now())
+    updatedAt           DateTime        @updatedAt
+    order               Order[]
+}
+
+enum status {
+    pending
+    delivered
+    cancelled
+}
+
+model Order {
+    id              String          @id @default(uuid())
+    belongsToId     String
+    createdAt       DateTime        @default(now())
+    user            User            @relation(fields: [belongsToId], references: [id])
+    orderItems      Product[]
+    
+    orderStatus     status          @default(pending)
+    address         String
+    country         String
+    city            String
+    postalCode      String
+    phone           String
 }

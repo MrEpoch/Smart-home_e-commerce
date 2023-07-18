@@ -18,7 +18,7 @@ export default function Cart(): React.ReactNode {
 
     return (
         <>
-            <button onClick={() => setShow(true)} type="button" className="btn button_box btn-primary" >
+            <button onClick={() => setShow(true)} type="button" className="btn button_box bg-black text-white" >
                 <ShoppingCartIcon />
             </button>
             {loading && <div>loading...</div>}

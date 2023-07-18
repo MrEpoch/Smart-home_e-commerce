@@ -6,3 +6,19 @@ export type ThemeContextType = {
   dark: boolean;
   toggle: () => void;
 };
+
+export type ProductContextType = {
+    products: Product[];
+    isLoading: boolean;
+    error: string;
+}
+
+export type Product = {
+    id: string;
+    name: string;
+    price: string;
+    description: string;
+    long_description: string;
+    image: string;
+    category: string;
+}

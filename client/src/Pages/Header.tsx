@@ -9,7 +9,7 @@ const Cart = lazy(() => import("./cart-components/cart"));
 
 export default function Header(): React.ReactElement {
     return (
-    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary navbar__navbar">
       <Container className="navbar__container">
         <Navbar.Brand className="navbar__brand">
             <Link id="brand_name" to="/">
@@ -36,7 +36,7 @@ export default function Header(): React.ReactElement {
           </Nav>
           <Nav>
             <Link to="/userpage">
-                <button className="btn button_box btn-primary">
+                <button className="btn button_box bg-black text-white">
                     <PersonIcon />
                 </button>
             </Link>

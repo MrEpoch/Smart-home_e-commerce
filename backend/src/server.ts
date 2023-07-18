@@ -1,5 +1,5 @@
 import express from 'express';
-import router from './router';
+
 import cors from 'cors';
 import { createNewUser, signIn } from './handlers/user';
 import { protectRoute } from './modules/auth';

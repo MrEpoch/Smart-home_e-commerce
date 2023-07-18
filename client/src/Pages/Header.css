@@ -1,10 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
+.navbar__navbar {
+    width: 100%;
+}
+
 .navbar__container {
+    margin: 0;
     display: flex;
+    width: 100%;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    margin-left: 10rem;
+    margin-right: 10rem;
 }
 
 .navbar-nav > *{
@@ -16,6 +24,11 @@
 @media (max-width: 992px) {
     .navbar-nav > *{
         margin-top: 1rem;
+    }
+
+    .navbar__container {
+        margin-left: 5rem;
+        margin-right: 5rem;
     }
 }
 
@@ -52,10 +65,8 @@
 
 #brand_name {
     font-family: 'Anton', sans-serif;
-    color: var(--main-color);
+    color: black;
     font-size: 1.5rem;
-    margin-right: 0.5rem;
-    text-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
 }
 
@@ -66,4 +77,14 @@
 
 .navbar-toggler {
     box-shadow: none!important;
+}
+
+.dropdown-item > a {
+    width: 100%;
+    padding: 0.5rem 1rem;
+}
+
+.dropdown-item {
+    padding: unset!important;
+    display: flex;
 }

@@ -1,7 +1,11 @@
 import { createContext } from "react";
-import { ThemeContextType } from "./Types";
+import { ProductContextType, ThemeContextType } from "./Types";
 
 export const ThemeContext = createContext<ThemeContextType>(
-  {} as ThemeContextType,
+    {} as ThemeContextType,
+);
+
+export const ProductContext = createContext<ProductContextType>(
+    {} as ProductContextType,
 );
 

@@ -12,3 +12,9 @@
     justify-content: center;
     align-items: center;
 }
+
+.special__span {
+    font-weight: 600;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
