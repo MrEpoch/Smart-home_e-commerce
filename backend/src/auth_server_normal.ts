@@ -2,7 +2,7 @@ import express from 'express';
 import router from './Routes/router-normal_api';
 import cors from 'cors';
 import { createNewUser, signIn } from './handlers/user';
-import { protectRoute } from './modules/auth';
+import { create_access_normal, protect_normal_api_route as protectRoute } from './modules/auth';
 import { body } from 'express-validator';
 import { handleError } from './modules/middleware';
 import morgan from 'morgan';
@@ -23,6 +23,9 @@ app.post('/server/normal-signup',
     body('email').isEmail(),
     body('password').isString().isLength({ min: 1 })
 ,handleError, createNewUser);
+
+app.post("/server/normal-token", create_access_normal);
+
 app.use("/server/normal-api", protectRoute, router);
 
 export default app;

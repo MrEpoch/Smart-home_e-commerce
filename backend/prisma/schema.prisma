@@ -17,11 +17,12 @@ enum role {
 
 model User {
   id              String           @id @default(uuid())
-  username        String           @unique @db.VarChar(30)
+  firstName       String           @unique 
+  lastName        String           @unique
   email           String           @unique
   password        String           @unique
   createdAt       DateTime         @default(now())
-
+  role            role             @default(user)
   orders          Order[]
 }
 
@@ -49,6 +50,8 @@ model Product {
     description         String
     long_description    String
     price               String
+    
+    stripeProductId     String
     image               String
     category            categories      @default(new)
     countInStock        String

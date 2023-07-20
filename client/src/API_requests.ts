@@ -286,6 +286,31 @@ async function handle_err(e: any): Promise<void> {
   return;
 }
 
+async function handle_case_error(e: any): Promise<void> {
+    if (e === undefined || e.response === undefined) return;
+    const condition =
+        typeof e === "object" && Object.keys(e.response).includes("data");
+    switch (e.response.data) {
+        case condition && e.response.data.name === "TokenExpiredError":
+            await LogOut();
+            window.location.pathname = "/";
+            break;
+        case condition && e.response.data.name === "JsonWebTokenError":
+            await LogOut();
+            window.location.pathname = "/";
+            break;
+        case condition && e.response.data.name === "NotBeforeError":
+            await LogOut();
+            window.location.pathname = "/";
+            break;
+        case condition && e.response.data.name === "getProductsErr":
+            break;
+        case condition && e.response.data.name === "getProductErr":
+            break;
+    }
+}
+
+
 function encrypt_data(data: string, key: string): string {
   return CryptoJS.AES.encrypt(data, key).toString();
 }
