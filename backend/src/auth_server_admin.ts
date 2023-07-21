@@ -1,7 +1,7 @@
 import express from 'express';
 import router from './Routes/router-admin_api';
 import cors from 'cors';
-import { createNewUser, signIn } from './handlers/user';
+import { log_in_admin } from './handlers/user';
 import { create_access_admin, protect_admin_api_route as protectRoute } from './modules/auth';
 import { body } from 'express-validator';
 import { handleError } from './modules/middleware';
@@ -15,14 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.post('/server/login', 
-    body('username').isString().isLength({ min: 0, max: 30}),
+    body('firstName').isString().isLength({ min: 0, max: 200}),
+    body('lastName').isString().isLength({ min: 0, max: 200 }),
     body('password').isString().isLength({ min: 1 })
-,handleError ,signIn);
-app.post('/server/signup', 
-    body('username').isString().isLength({ min: 0, max: 30}),
-    body('email').isEmail(),
-    body('password').isString().isLength({ min: 1 })
-,handleError, createNewUser);
+,handleError ,log_in_admin);
 
 app.post("/server/admin-token", create_access_admin);
 

@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { body } from "express-validator";
 import { handleError } from "../modules/middleware";
-import { createNewUser } from "../handlers/user";
+import { create_admin_user } from "../handlers/user";
 
 const router = Router();
 
@@ -25,6 +25,6 @@ router.post('/signup',
     body('username').isString().isLength({ min: 0, max: 30}),
     body('email').isEmail(),
     body('password').isString().isLength({ min: 1 })
-,handleError, createNewUser);
+,handleError, create_admin_user);
 
 export default router;

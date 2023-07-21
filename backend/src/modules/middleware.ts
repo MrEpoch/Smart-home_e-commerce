@@ -35,6 +35,8 @@ export const product_case_error = (err, res: Response, next: NextFunction) => {
             break;
         case err.name === "getOrderErr":
             break;
+        case err.name === "UnauthorizedError":
+            break;
     }
     next();
 }
