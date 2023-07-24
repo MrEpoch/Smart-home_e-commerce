@@ -15,8 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 app.post('/server/login', 
-    body('firstName').isString().isLength({ min: 0, max: 200}),
-    body('lastName').isString().isLength({ min: 0, max: 200 }),
+    body('email').isString().isEmail(),
     body('password').isString().isLength({ min: 1 })
 ,handleError ,log_in_admin);
 
