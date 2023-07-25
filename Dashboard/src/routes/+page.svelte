@@ -1,10 +1,11 @@
 <script>
     import Header from "./header.svelte";
+    import HeaderRe from "./header_re.svelte";
     import "../style.css";
 </script>
 
 <section class="page">
-    <Header />
+    <HeaderRe />
 </section>
 
 <style>
