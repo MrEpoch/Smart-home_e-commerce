@@ -23,8 +23,7 @@
         font-size: 14px;
         color: #333;
     
-        grid-column: 2 / 3;
-        grid-row: 2 / 3;
+        transition: all 0.3s ease-in-out;
     }
 
     span {

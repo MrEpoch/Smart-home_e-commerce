@@ -21,6 +21,6 @@ app.post('/server/login',
 
 app.post("/server/admin-token", create_access_admin);
 
-app.use("/server/admin_api", protectRoute, router);
+app.use("/server/admin-api", protectRoute, router);
 
 export default app;

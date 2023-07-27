@@ -2,8 +2,8 @@
 <section class="login__page">
     <form class="login__form" method="POST" action="?/login_acc">
         <h1>Login</h1>
-        <input type="text" placeholder="username" />
-        <input type="password" placeholder="password" />
+        <input name="email" type="email"  placeholder="username" />
+        <input name="password" type="password" placeholder="password" />
         <button type="submit">Login</button>
     </form>
 </section>

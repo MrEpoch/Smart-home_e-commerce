@@ -3,6 +3,48 @@ import prisma from "../db";
 import { hashPassword, comparePasswords } from "../modules/auth";
 import { create_REFRESH_JWT } from "../modules/tokens";
 
+export const get_user = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const user = await prisma.user.findMany({
+            where: {
+                id: req.body.id,
+                role: 'user'
+            }
+        });
+        if (!user) {
+            res.status(401);
+            res.json({ message: "Invalid email" });
+            return;
+        }
+        res.status(200);
+        res.json(user);
+    } catch (e) {
+        e.type = "getAccount";
+        next(e);
+    }
+}
+
+export const get_admin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const user = await prisma.user.findMany({
+            where: {
+                id: req.body.id,
+                role: 'admin'
+            }
+        });
+        if (!user) {
+            res.status(401);
+            res.json({ message: "Invalid email" });
+            return;
+        }
+        res.status(200);
+        res.json(user);
+    } catch (e) {
+        e.type = "getAccount";
+        next(e);
+    }
+}
+
 export const create_normal_user = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const valid = await creation_check(req, res);

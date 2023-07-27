@@ -1,23 +1,12 @@
 import { Request, Response, Router } from "express";
-import { body } from "express-validator";
-import { handleError } from "../modules/middleware";
+import { getProduct, getProducts } from "../handlers/products";
+import { get_user } from "../handlers/user";
 
 const router = Router();
 
-router.get("/", (req: Request , res: Response) => {
-    res.send("Hello World!");
-});
+router.get("/", getProducts);
+router.get("/:id", getProduct);
 
-router.post("/", body("name").isString(), handleError, (req: Request , res: Response) => {
-    res.send("Hello World!");
-});
-
-router.delete("/", (req: Request, res: Response) => {
-    res.send("Hello World!");
-});
-
-router.put("/", (req: Request, res: Response) => {
-    res.send("Hello World!");
-});
+router.get("/account", get_user); 
 
 export default router;

@@ -4,45 +4,65 @@ import path from "path";
 import fs from "fs";
 
 
-export const allSandwiches = async (
-  req: Request,
-  res: Response,
+export const getProducts = async (
+    req: Request,
+    res: Response,
 ) => {
-  try {
-    const products = await prisma.product.findMany({
-        skip: req.query.skip,
-        take: req.query.take,
-    });
-    if (products.length === 0) { 
-        res.json([]);
+    try {
+        const skip = (typeof req.query?.skip === "number" && req.query.skip) ?? 0;
+        const take = (typeof req.query?.take === "number" && req.query.take) ?? 0;
+        const products = await prisma.product.findMany({
+            skip,
+            take,
+        });
+        if (products.length === 0) {
+            res.status(200);
+            res.json([]);
+            return;
+        };
+        res.status(200);
+        res.json(products);
+    } catch (e) {
+        console.log(e);
+        res.status(401);
+        res.send({ name: "getProductsErr" });
         return;
-    };
-    res.json(products);
-  } catch (e) {
-    console.log(e);
-    res.status(401);
-    res.send({ name: "getProductsErr" });
-    return;
-  }
+    }
 };
 
-export const getSandwich = async (
-  req: Request,
-  res: Response,
+export const getProductsCount = async (
+    req: Request,
+    res: Response,
 ) => {
-  try {
-    const product = await prisma.product.findUnique({
-      where: {
-        id: req.params.id,
-      },
-    });
-    res.json(product);
-  } catch (e) {
-    console.log(e);
-    res.status(401);
-    res.send({ message: "getProductErr" });
-    return;
-  }
+    try {
+        const products = await prisma.product.findMany();
+        res.status(200);
+        res.json(products.length);
+    } catch (e) {
+        console.log(e);
+        res.status(401);
+        res.send({ name: "getProductsCountErr" });
+        return;
+    }
+};
+
+export const getProduct = async (
+    req: Request,
+    res: Response,
+) => {
+    try {
+        const product = await prisma.product.findUnique({
+            where: {
+                id: req.params.id,
+            },
+        });
+        res.json(product);
+    } catch (e) {
+        console.log(e);
+        res.status(401);
+        res.send({ message: "getProductErr" });
+        return;
+    }
 };
 
 export const create_product = async (
@@ -62,6 +82,7 @@ export const create_product = async (
         stripeProductId: req.body.stripeId,
         image: url + "/uploads/" + filtered_path,
       },
+
     });
     res.json(product);
   } catch (e) {

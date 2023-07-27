@@ -54,9 +54,8 @@ model Product {
     stripeProductId     String
     image               String
     category            categories      @default(new)
-    countInStock        String
-    rating              Float
-    numReviews          Int
+    rating              Float           @default(0)
+    numReviews          Int             @default(0)
     createdAt           DateTime        @default(now())
     updatedAt           DateTime        @updatedAt
     order               Order[]

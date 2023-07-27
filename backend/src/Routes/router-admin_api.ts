@@ -1,25 +1,21 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { body } from "express-validator";
 import { handleError } from "../modules/middleware";
-import { create_admin_user } from "../handlers/user";
+import { create_admin_user, get_admin } from "../handlers/user";
+import { create_product, delete_product, getProduct, getProducts, update_product } from "../handlers/products";
 
 const router = Router();
 
-router.get("/", (req: Request , res: Response) => {
-    res.send("Hello World!");
-});
+router.get("/", getProducts);
+router.get("/:id", getProduct);
 
-router.post("/", body("name").isString(), handleError, (req: Request , res: Response) => {
-    res.send("Hello World!");
-});
+router.get("/account", get_admin);
 
-router.delete("/", (req: Request, res: Response) => {
-    res.send("Hello World!");
-});
+router.post("/", create_product);
 
-router.put("/", (req: Request, res: Response) => {
-    res.send("Hello World!");
-});
+router.delete("/:id", delete_product);
+
+router.put("/:id", update_product);
 
 router.post('/signup', 
     body('username').isString().isLength({ min: 0, max: 30}),

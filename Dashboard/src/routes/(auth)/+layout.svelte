@@ -25,15 +25,18 @@
         height: 100vh;
         display: flex;
         width: 100%;
+        transition: all 0s ease-in-out;
     }
 
     .page__content {
-        width: 85%;
+        width: 100%;
         height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: space-between;
         position: relative;
+        transition: all 0s ease-in-out;
     }
 
     .page__content__large {
