@@ -1,5 +1,9 @@
+<script>
+    import { hidden_nav } from "./stores.js";
+</script>
 
-<footer>
+
+<footer class:normalSize={$hidden_nav}>
     <span>© 2023</span>
     <p>
         Made by 
@@ -18,6 +22,9 @@
         width: 100%;
         font-size: 14px;
         color: #333;
+    
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
     }
 
     span {
@@ -31,6 +38,9 @@
     
     p {
         margin: 0;
+    }
+
+    .normalSize {
     }
 
 </style>
