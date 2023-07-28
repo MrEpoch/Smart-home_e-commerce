@@ -19,8 +19,10 @@ app.post('/server/login',
     body('password').isString().isLength({ min: 1 })
 ,handleError ,log_in_admin);
 
-app.post("/server/admin-token", create_access_admin);
+app.get("/server/admin-token", create_access_admin);
 
 app.use("/server/admin-api", protectRoute, router);
+app.use('/uploads', express.static('uploads'));
 
 export default app;
+

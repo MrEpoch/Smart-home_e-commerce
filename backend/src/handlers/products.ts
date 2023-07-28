@@ -9,8 +9,8 @@ export const getProducts = async (
     res: Response,
 ) => {
     try {
-        const skip = (typeof req.query?.skip === "number" && req.query.skip) ?? 0;
-        const take = (typeof req.query?.take === "number" && req.query.take) ?? 0;
+        const skip = typeof req.query?.skip === "string" && req.query.skip ? parseInt(req.query.skip) : 0;
+        const take = typeof req.query?.take === "string" && req.query.take ? parseInt(req.query.take) : 0;
         const products = await prisma.product.findMany({
             skip,
             take,
@@ -22,6 +22,7 @@ export const getProducts = async (
         };
         res.status(200);
         res.json(products);
+        return;
     } catch (e) {
         console.log(e);
         res.status(401);
@@ -72,7 +73,7 @@ export const create_product = async (
   try {
     const url = req.protocol + "://" + req.get("host");
     const filtered_path = req.body.image.toLowerCase().split(" ").join("-");
-    
+    console.log("before product create"); 
     const product = await prisma.product.create({
       data: {
         name: req.body.name,
@@ -84,6 +85,7 @@ export const create_product = async (
       },
 
     });
+    res.status(201);
     res.json(product);
   } catch (e) {
     console.log(e);
@@ -121,7 +123,7 @@ export const update_product = async (
             }
         }
     );
-
+    res.status(201);
     res.json(product);
   } catch (e) {
     console.log(e);
@@ -160,13 +162,25 @@ export const delete_product = async (
   req: Request,
   res: Response,
 ) => {
-  try {
+    try {
     const product = await prisma.product.delete({
       where: {
         id: req.params.id,
       },
     });
-    res.json(product);
+
+    const imageName = product.image.split("/")[4];
+
+    fs.unlink(
+        path.join(__dirname, "../../uploads/" + imageName),
+        (err) => {
+            if (err) {
+                console.log(err);
+            }
+        }
+    );
+    res.status(201);
+    res.json({ product });
   } catch (e) {
     console.log(e);
     res.status(401);

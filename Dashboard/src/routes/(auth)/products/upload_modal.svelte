@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 	import Modal from "./Modal.svelte";
-
+    
     let showModal = false;
     
     const openModal = () => {
@@ -18,7 +18,7 @@
     <form slot="form" action="?/create" method="POST" enctype="multipart/form-data">
         <label>
             <span>File</span>
-            <input type="file" name="file" />
+            <input type="file" name="image" />
         </label>
         <label>
             <span>Name</span>

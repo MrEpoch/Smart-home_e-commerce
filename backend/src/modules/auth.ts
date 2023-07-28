@@ -20,8 +20,9 @@ export interface RequestWithUser extends Request {
 export const protect_admin_api_route = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const token = bearer_check(req.headers.authorization, res);
     try {
-        const user = await jwt.verify(token, process.env.REFRESH_ADMIN_SECRET);
+        const user = await jwt.verify(token, process.env.ACCESS_ADMIN_SECRET);
         req.user = user;
+        console.log("It went through");
         next();
     } catch (e) {
         res.status(401);
@@ -33,7 +34,7 @@ export const protect_admin_api_route = async (req: RequestWithUser, res: Respons
 export const protect_normal_api_route = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     const token = bearer_check(req.headers.authorization, res);
     try {
-        const user = await jwt.verify(token, process.env.REFRESH_NORMAL_SECRET);
+        const user = await jwt.verify(token, process.env.ACCESS_NORMAL_SECRET);
         req.user = user;
         next();
     } catch (e) {
