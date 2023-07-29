@@ -8,17 +8,18 @@ export type ThemeContextType = {
 };
 
 export type ProductContextType = {
-    products: Product[];
-    isLoading: boolean;
-    error: string;
-}
+  products: Product[];
+  isLoading: boolean;
+  error: Error | null;
+  setSkip: React.Dispatch<React.SetStateAction<number>>;
+};
 
 export type Product = {
-    id: string;
-    name: string;
-    price: string;
-    description: string;
-    long_description: string;
-    image: string;
-    category: string;
-}
+  id: string;
+  name: string;
+  price: string;
+  description: string;
+  long_description: string;
+  image: string;
+  category: string;
+};

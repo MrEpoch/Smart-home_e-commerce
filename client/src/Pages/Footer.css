@@ -1,6 +1,6 @@
 .footer_bgC {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  align-items: center;
 }

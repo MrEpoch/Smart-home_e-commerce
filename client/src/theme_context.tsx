@@ -1,6 +1,8 @@
 import React, { useContext, useMemo, useState } from "react";
 import { ChildrenProp } from "./Types";
 import { ThemeContext } from "./Contexts";
+// @ts-ignore
+import Cookies from "js-cookie";
 
 export function useTheme() {
   const value = useContext(ThemeContext);
@@ -13,16 +15,16 @@ export default function Theme_Context({
 }: ChildrenProp): React.JSX.Element {
   const [dark, setDark] = useState<boolean>(false);
 
-  useMemo(() => {
-    const NewTheme: string | null = localStorage.getItem(
-      import.meta.env.VITE_THEME_NAME,
-    );
-    if (NewTheme) setDark(JSON.parse(NewTheme));
+    useMemo(() => {
+      (async () => {
+        const NewTheme = await Cookies.get(import.meta.env.VITE_THEME_NAME);
+        if (NewTheme) setDark(JSON.parse(NewTheme));
+      })();
   }, []);
 
   function toggle() {
     setDark(!dark);
-    localStorage.setItem(
+    Cookies.set(
       import.meta.env.VITE_THEME_NAME,
       JSON.stringify(!dark),
     );

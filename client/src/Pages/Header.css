@@ -1,90 +1,90 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
 
 .navbar__navbar {
-    width: 100%;
+  width: 100%;
 }
 
 .navbar__container {
-    margin: 0;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    margin-left: 10rem;
-    margin-right: 10rem;
+  margin: 0;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
 }
 
-.navbar-nav > *{
-    display: grid;
-    align-items: center;
-    margin: 0 1rem;
+.navbar-nav > * {
+  display: grid;
+  align-items: center;
+  margin: 0 1rem;
 }
 
 @media (max-width: 992px) {
-    .navbar-nav > *{
-        margin-top: 1rem;
-    }
+  .navbar-nav > * {
+    margin-top: 1rem;
+  }
 
-    .navbar__container {
-        margin-left: 5rem;
-        margin-right: 5rem;
-    }
+  .navbar__container {
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
 }
 
 .navbar__links {
-     color: #000;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 100;
-    transition: all 0.3s ease-in-out;
+  color: #000;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 100;
+  transition: all 0.3s ease-in-out;
 }
 
 .navbar__links:hover {
-    transition: all 0.3s ease-in-out;
-    transform: translateY(2px);
+  transition: all 0.3s ease-in-out;
+  transform: translateY(2px);
 }
 
 .navbar__container a {
-    text-decoration: none;
-    color: #000;
+  text-decoration: none;
+  color: #000;
 }
 
 .navbar__container a:active {
-    background-color: unset;
+  background-color: unset;
 }
 
 .navbar__brand {
-    display: flex;
-    align-items: center;
-    width: 3rem;
-    color: var(--main-color);
-    height: 3rem;
-    margin-right: 3rem;
+  display: flex;
+  align-items: center;
+  width: 3rem;
+  color: var(--main-color);
+  height: 3rem;
+  margin-right: 3rem;
 }
 
 #brand_name {
-    font-family: 'Anton', sans-serif;
-    color: black;
-    font-size: 1.5rem;
-    transition: all 0.3s ease-in-out;
+  font-family: "Anton", sans-serif;
+  color: black;
+  font-size: 1.5rem;
+  transition: all 0.3s ease-in-out;
 }
 
 #brand_name:hover {
-    transition: all 0.3s ease-in-out;
-    transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+  transform: scale(1.05);
 }
 
 .navbar-toggler {
-    box-shadow: none!important;
+  box-shadow: none !important;
 }
 
 .dropdown-item > a {
-    width: 100%;
-    padding: 0.5rem 1rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
 }
 
 .dropdown-item {
-    padding: unset!important;
-    display: flex;
+  padding: unset !important;
+  display: flex;
 }

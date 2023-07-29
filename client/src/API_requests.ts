@@ -1,30 +1,28 @@
 import axios from "axios";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import CryptoJS from "crypto-js";
-import { Product, userType } from "./Types";
+import Cookies from "js-cookie";
+import { Product } from "./Types";
 
-export const request_auth_url = "http://localhost:4529/auth-user";
-
-export const request_item_url = "http://localhost:4527/server";
+export const request_url = "http://localhost:4528/server";
+export const request_data_url = "http://localhost:4527/server/data";
 
 export const LogIn = async (
   name: string,
   password: string,
-): Promise<userType | void> => {
+): Promise<any | void> => {
   try {
-    const { data } = await axios.post(request_auth_url + "/login", {
+    const { data } = await axios.post(request_url + "/normal-login", {
       name,
       password,
     });
-    const encrypted_refresh_token = encrypt_data(
-      data.REFRESH_TOKEN,
-      import.meta.env.VITE_REFRESH_TOKEN_SALT,
-    );
-    localStorage.setItem(
-      import.meta.env.VITE_REFRESH_TOKEN_NAME,
-      encrypted_refresh_token,
-    );
+
+    await Cookies.set("refresh_token", data.REFRESH_TOKEN, {
+      expires: 1,
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
     return data.user;
   } catch (e) {
     handle_err(e);
@@ -34,20 +32,12 @@ export const LogIn = async (
 
 export const LogOut = async (): Promise<void> => {
   try {
-    const local_token: string | null = localStorage.getItem(
-      import.meta.env.VITE_REFRESH_TOKEN_NAME,
-    );
-    if (!local_token) return;
-    const refresh_token: string = decrypt_data(
-      local_token,
-      import.meta.env.VITE_REFRESH_TOKEN_SALT,
-    );
-    await axios.post(request_auth_url + "/logout", { token: refresh_token });
-
-    localStorage.removeItem(import.meta.env.VITE_REFRESH_TOKEN_NAME);
+    const cookie: string | null = await Cookies.get("refresh_token");
+    if (!cookie) return;
+    await Cookies.remove("refresh_token");
     return;
   } catch (e) {
-    throw new Error("error");
+    throw new Error("Error logging out");
   }
 };
 
@@ -60,9 +50,9 @@ export const CreateAccount = async (
   city: string,
   postalCode: string,
   country: string,
-): Promise<userType> => {
+): Promise<any> => {
   try {
-    const { data } = await axios.post(request_auth_url + "/signup", {
+    const { data } = await axios.post(request_url + "/normal-signup", {
       name: name,
       password: password,
       email: email,
@@ -73,14 +63,12 @@ export const CreateAccount = async (
       country: country,
     });
 
-    const encrypted_refresh_token = encrypt_data(
-      data.REFRESH_TOKEN,
-      import.meta.env.VITE_REFRESH_TOKEN_SALT,
-    );
-    localStorage.setItem(
-      import.meta.env.VITE_REFRESH_TOKEN_NAME,
-      encrypted_refresh_token,
-    );
+    await Cookies.set("refresh_token", data.REFRESH_TOKEN, {
+      expires: 1,
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
     return data;
   } catch (e) {
     handle_err(e);
@@ -90,24 +78,19 @@ export const CreateAccount = async (
 
 export const GetAccount = async () => {
   try {
-    const local_token = localStorage.getItem(
-      import.meta.env.VITE_REFRESH_TOKEN_NAME,
-    );
-    if (!local_token) return;
-    const refresh_token = decrypt_data(
-      local_token,
-      import.meta.env.VITE_REFRESH_TOKEN_SALT,
-    );
-    const access_token = await axios.post(request_auth_url + "/token", {
-      token: refresh_token,
+    const cookie: string | null = await Cookies.get("refresh_token");
+    if (!cookie) {
+      LogOut();
+      return;
+    }
+
+    const access_token = await axios.get(request_url + "/normal-token", {
+      headers: { Authorization: `Bearer ${cookie}` },
     });
 
-    const { data } = await axios.get(
-      request_item_url + "/sandwiches/user",
-      {
-        headers: { Authorization: `Bearer ${access_token.data.ACCESS_TOKEN}` },
-      },
-    );
+    const { data } = await axios.get(request_url + "/normal-api/account", {
+      headers: { Authorization: `Bearer ${access_token.data.ACCESS_TOKEN}` },
+    });
     return data;
   } catch (e) {
     handle_err(e);
@@ -115,106 +98,38 @@ export const GetAccount = async () => {
   }
 };
 
-export const GetSandwiches = async (): Promise<Array<SandwichType>> => {
+export const GetProducts = async (skip: number): Promise<Array<Product>> => {
   try {
-    const { data } = await axios.get(request_item_url + "/");
+    const { data } = await axios.get(request_data_url + "/?take=10&skip=" + skip);
     return data;
   } catch (e) {
     throw new Error("error");
   }
 };
 
-export const GetSandwich = async (id: string): Promise<SandwichType> => {
+export const GetProduct = async (id: string): Promise<Product> => {
   try {
-    const { data } = await axios.get(request_item_url + "/" + id);
+    const { data } = await axios.get(request_data_url + "/" + id);
     return data;
   } catch (e) {
-    throw new Error("error");
-  }
-};
-
-export const PostComment = async (
-  title: string,
-  comment: string,
-  rating: number,
-  sandwichId: string,
-): Promise<void> => {
-  try {
-    const local_token = localStorage.getItem(
-      import.meta.env.VITE_REFRESH_TOKEN_NAME,
-    );
-    if (!local_token) return;
-    const refresh_token = decrypt_data(
-      local_token,
-      import.meta.env.VITE_REFRESH_TOKEN_SALT,
-    );
-    const access_token = await axios.post(request_auth_url + "/token/", {
-      token: refresh_token,
-    });
-
-    await axios.post(
-      request_item_url + "/sandwiches/comment",
-      { title, comment, rating, belongsToSandwichId: sandwichId },
-      {
-        headers: { Authorization: `Bearer ${access_token.data.ACCESS_TOKEN}` },
-      },
-    );
-    return;
-  } catch (e) {
-    handle_err(e);
-    throw new Error("error");
-  }
-};
-
-export const UpdateComment = async (
-  title: string,
-  comment: string,
-  rating: number,
-  commentId: string,
-): Promise<void> => {
-  try {
-    const local_token = localStorage.getItem(
-      import.meta.env.VITE_REFRESH_TOKEN_NAME,
-    );
-    if (!local_token) return;
-    const refresh_token = decrypt_data(
-      local_token,
-      import.meta.env.VITE_REFRESH_TOKEN_SALT,
-    );
-    const access_token = await axios.post(request_auth_url + "/token/", {
-      token: refresh_token,
-    });
-    await axios.put(
-      request_item_url + "/sandwiches/comment/" + commentId,
-      { title, comment, rating },
-      {
-        headers: { Authorization: `Bearer ${access_token.data.ACCESS_TOKEN}` },
-      },
-    );
-    return;
-  } catch (e) {
-    handle_err(e);
-
     throw new Error("error");
   }
 };
 
 export const UpdateFavourites = async (favourites: string[]): Promise<void> => {
   try {
-    const local_token = localStorage.getItem(
-      import.meta.env.VITE_REFRESH_TOKEN_NAME,
-    );
-    if (!local_token) return;
-    const refresh_token = decrypt_data(
-      local_token,
-      import.meta.env.VITE_REFRESH_TOKEN_SALT,
-    );
-    const access_token = await axios.post(request_auth_url + "/token/", {
-      token: refresh_token,
+    const cookie = await Cookies.get("refresh_token");
+    if (!cookie) {
+      LogOut();
+      return;
+    }
+
+    const access_token = await axios.get(request_url + "/normal-token", {
+        headers: { Authorization: `Bearer ${cookie}` },
     });
 
     await axios.put(
-      request_item_url + "/sandwiches/favourites",
+      request_url + "/normal-api/favourites",
       { favourites },
       {
         headers: { Authorization: `Bearer ${access_token.data.ACCESS_TOKEN}` },
@@ -228,27 +143,20 @@ export const UpdateFavourites = async (favourites: string[]): Promise<void> => {
 };
 
 type Checkout_response = {
-    url: string;
-}
+  url: string;
+};
 
 export async function Checkout_payment(
-  order: CartProductType[],
+  order: Array<Product>,
 ): Promise<void | Checkout_response> {
-  try {
-    const local_token = localStorage.getItem(
-      import.meta.env.VITE_REFRESH_TOKEN_NAME,
-    );
-    if (!local_token) return;
-    const refresh_token = decrypt_data(
-      local_token,
-      import.meta.env.VITE_REFRESH_TOKEN_SALT,
-    );
-    const access_token = await axios.post(request_auth_url + "/token/", {
-      token: refresh_token,
+    try {
+    const cookie = await Cookies.get("refresh_token");
+    const access_token = await axios.get(request_url + "/normal-token", {
+        headers: { Authorization: `Bearer ${cookie}` },
     });
 
     const { data } = await axios.post(
-      request_item_url + "/sandwiches/checkout",
+      request_url + "/normal-api/checkout",
       { order: order },
       {
         headers: { Authorization: `Bearer ${access_token.data.ACCESS_TOKEN}` },
@@ -257,7 +165,7 @@ export async function Checkout_payment(
     return data;
   } catch (e) {
     handle_err(e);
-    throw new Error("error");
+    throw new Error("Error handling checkout");
   }
 }
 
@@ -287,34 +195,26 @@ async function handle_err(e: any): Promise<void> {
 }
 
 async function handle_case_error(e: any): Promise<void> {
-    if (e === undefined || e.response === undefined) return;
-    const condition =
-        typeof e === "object" && Object.keys(e.response).includes("data");
-    switch (e.response.data) {
-        case condition && e.response.data.name === "TokenExpiredError":
-            await LogOut();
-            window.location.pathname = "/";
-            break;
-        case condition && e.response.data.name === "JsonWebTokenError":
-            await LogOut();
-            window.location.pathname = "/";
-            break;
-        case condition && e.response.data.name === "NotBeforeError":
-            await LogOut();
-            window.location.pathname = "/";
-            break;
-        case condition && e.response.data.name === "getProductsErr":
-            break;
-        case condition && e.response.data.name === "getProductErr":
-            break;
-    }
+  if (e === undefined || e.response === undefined) return;
+  const condition =
+    typeof e === "object" && Object.keys(e.response).includes("data");
+  switch (e.response.data) {
+    case condition && e.response.data.name === "TokenExpiredError":
+      await LogOut();
+      window.location.pathname = "/";
+      break;
+    case condition && e.response.data.name === "JsonWebTokenError":
+      await LogOut();
+      window.location.pathname = "/";
+      break;
+    case condition && e.response.data.name === "NotBeforeError":
+      await LogOut();
+      window.location.pathname = "/";
+      break;
+    case condition && e.response.data.name === "getProductsErr":
+      break;
+    case condition && e.response.data.name === "getProductErr":
+      break;
+  }
 }
 
-
-function encrypt_data(data: string, key: string): string {
-  return CryptoJS.AES.encrypt(data, key).toString();
-}
-
-function decrypt_data(data: string, key: string): string {
-  return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
-}

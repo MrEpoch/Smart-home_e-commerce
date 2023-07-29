@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from "react";
 import { ChildrenProp, Product } from "./Types";
 import { ProductContext } from "./Contexts";
 import { useQuery } from "@tanstack/react-query";
+import { GetProducts } from "./API_requests";
 
 export function useTheme() {
   const value = useContext(ProductContext);
@@ -12,12 +13,14 @@ export function useTheme() {
 export default function Theme_Context({
   children,
 }: ChildrenProp): React.JSX.Element {
-  
   const [products, setProducts] = useState<Array<Product>>([]);
+  const [skip, setSkip] = useState<number>(0);
 
   const { data, isLoading, error } = useQuery<Product[], Error>({
-    queryKey: ["products"],
-    queryFn: async () => await getProducts(),
+    queryKey: ["products", skip],
+    queryFn: async () => await GetProducts(skip),
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
   });
 
   useMemo(() => {
@@ -27,7 +30,8 @@ export default function Theme_Context({
   const value = {
     products,
     isLoading,
-    error
+    error,
+    setSkip
   };
 
   return (

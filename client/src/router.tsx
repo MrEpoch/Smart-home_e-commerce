@@ -10,11 +10,11 @@ const Home__page = lazy(() => import("./Pages/Home__page"));
 function Header_Footer({ children }: ChildrenProp): React.JSX.Element {
   return (
     <>
-        <Header />
-        {children}
-        <Footer />
+      <Header />
+      {children}
+      <Footer />
     </>
-  )
+  );
 }
 
 export default function Router(): React.JSX.Element {
@@ -27,10 +27,14 @@ export default function Router(): React.JSX.Element {
       }
     >
       <Routes>
-        <Route path="/" element={
+        <Route
+          path="/"
+          element={
             <Header_Footer>
-                <Home__page />
-            </Header_Footer>} />
+              <Home__page />
+            </Header_Footer>
+          }
+        />
         <Route path="/shop" element={<Header_Footer>shop</Header_Footer>} />
         <Route path="/about" element={<Header_Footer>about</Header_Footer>} />
         <Route

@@ -1,5 +1,5 @@
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import Router from "./router";
@@ -13,7 +13,7 @@ function App(): React.JSX.Element {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <Theme_Context>
-            <Router />
+          <Router />
         </Theme_Context>
       </QueryClientProvider>
     </BrowserRouter>

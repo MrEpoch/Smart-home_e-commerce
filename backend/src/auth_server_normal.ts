@@ -19,22 +19,21 @@ app.use(morgan("dev"));
 
 app.post(
   "/server/normal-login",
-  body("username").isString().isLength({ min: 0, max: 30 }),
   body("password").isString().isLength({ min: 1 }),
   handleError,
   create_normal_user,
 );
 app.post(
   "/server/normal-signup",
-  body("username").isString().isLength({ min: 0, max: 30 }),
   body("email").isEmail(),
   body("password").isString().isLength({ min: 1 }),
   handleError,
   log_in_normal,
 );
 
-app.post("/server/normal-token", create_access_normal);
+app.get("/server/normal-token", create_access_normal);
 
 app.use("/server/normal-api", protectRoute, router);
+app.use("/uploads", express.static("uploads"));
 
 export default app;

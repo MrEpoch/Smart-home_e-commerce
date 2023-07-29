@@ -72,7 +72,6 @@ export const create_access_admin = async (
 
 export const create_access_normal = async (req: Request, res: Response) => {
   const token = bearer_check(req.headers.authorization, res);
-
   await access_give(
     res,
     process.env.ACCESS_NORMAL_SECRET,

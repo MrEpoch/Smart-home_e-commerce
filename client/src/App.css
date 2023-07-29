@@ -1,20 +1,19 @@
 .button_box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 40px;
 }
 
 .pages_loading {
-    width: 100vh;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100vh;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .special__span {
-    font-weight: 600;
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: 600;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
-

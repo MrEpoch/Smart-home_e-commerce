@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +5,7 @@
 }
 
 :root {
-  --main-color: #10D3F9;
+  --main-color: #10d3f9;
   --system-color: #0f1319;
   --dark-theme: #212121;
   --dark-theme-hover: #3a3a3a;
@@ -28,7 +27,7 @@ body {
   font-family: "Poppins", sans-serif;
   background-color: #f1f1f1;
   height: auto;
-  padding-right: 0!important;
+  padding-right: 0 !important;
 }
 
 #root {
@@ -53,4 +52,3 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-track {
   background-color: #333;
 }
-
