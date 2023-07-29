@@ -7,6 +7,6 @@ const router = Router();
 router.get("/", getProducts);
 router.get("/:id", getProduct);
 
-router.get("/account", get_user); 
+router.get("/account", get_user);
 
 export default router;

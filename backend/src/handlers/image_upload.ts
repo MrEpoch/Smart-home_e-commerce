@@ -27,7 +27,7 @@ export const upload = multer({
     ) {
       console.log(file, "3");
       cb(null, true);
-    } else {  
+    } else {
       cb(null, false);
       return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
     }

@@ -2,7 +2,13 @@ import { Router, Request } from "express";
 import { body } from "express-validator";
 import { handleError } from "../modules/middleware";
 import { create_admin_user, get_admin } from "../handlers/user";
-import { create_product, delete_product, getProduct, getProducts, update_product } from "../handlers/products";
+import {
+  create_product,
+  delete_product,
+  getProduct,
+  getProducts,
+  update_product,
+} from "../handlers/products";
 import multer from "multer";
 
 const router = Router();
@@ -11,9 +17,9 @@ export const storage = multer.diskStorage({
   destination: function (req: Request, file, cb) {
     try {
       cb(null, "uploads/");
-    } catch (e) {  
-        console.log(e);
-        return cb(new Error("Only .png, .jpg and .jpeg format allowed!"), null);
+    } catch (e) {
+      console.log(e);
+      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"), null);
     }
   },
   filename: function (
@@ -22,12 +28,11 @@ export const storage = multer.diskStorage({
     cb: (error: Error | null, filename: string) => void,
   ) {
     try {
-        console.log(file, "2");
-        const file_name = file.originalname.toLowerCase().split(" ").join("-");
-        cb(null, file_name);
-    } catch (e) {  
-        console.log(e);
-        return cb(new Error("Only .png, .jpg and .jpeg format allowed!"), null);
+      const file_name = file.originalname.toLowerCase().split(" ").join("-");
+      cb(null, file_name);
+    } catch (e) {
+      console.log(e);
+      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"), null);
     }
   },
 });
@@ -40,14 +45,13 @@ export const upload = multer({
       file.mimetype == "image/jpg" ||
       file.mimetype == "image/jpeg"
     ) {
-      console.log(file, "3");
       cb(null, true);
-    } else {  
+    } else {
       cb(null, false);
       return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
     }
   },
-});
+}).single("image");
 
 router.get("/", getProducts);
 router.get("/:id", getProduct);
@@ -55,20 +59,40 @@ router.get("/:id", getProduct);
 router.get("/account", get_admin);
 
 router.post("/", create_product);
-router.post("/upload-img", upload.single("image"), (req, res, next) => {
+router.post("/upload-img", (req, res) => {
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      console.log(err);
+      res.status(400);
+      res.json(err);
+      return;
+    } else if (err) {
+      console.log(err);
+      res.status(400);
+      res.json(err);
+      return;
+    }
     console.log("moved to end");
     res.status(201);
     res.json("Image uploaded successfully!");
+    return;
+  });
+  res.status(202);
+  res.json("It works like a magic");
+  return;
 });
 
 router.delete("/:id", delete_product);
 
 router.put("/:id", update_product);
 
-router.post('/signup', 
-    body('username').isString().isLength({ min: 0, max: 30}),
-    body('email').isEmail(),
-    body('password').isString().isLength({ min: 1 })
-,handleError, create_admin_user);
+router.post(
+  "/signup",
+  body("username").isString().isLength({ min: 0, max: 30 }),
+  body("email").isEmail(),
+  body("password").isString().isLength({ min: 1 }),
+  handleError,
+  create_admin_user,
+);
 
 export default router;

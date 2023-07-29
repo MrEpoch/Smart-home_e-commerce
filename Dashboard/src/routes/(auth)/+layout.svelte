@@ -22,7 +22,7 @@
 
 <style>
     .page {
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
         width: 100%;
         transition: all 0s ease-in-out;
@@ -30,7 +30,7 @@
 
     .page__content {
         width: 100%;
-        height: 100%;
+        min-height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -55,13 +55,19 @@
         height: 30px;
     }
 
-    .hidden_navBtn {
-        
-    }
-
     .reversed__menu {
         transform: rotate(180deg);
         transition: transform 0.3s ease-in-out;
+    }
+
+    @media (max-width: 700px) {
+        .nav_menu {
+            position: fixed;
+            z-index: 12;
+            top: 10px;
+            left: unset;
+            right: 10px;
+        }
     }
 
 </style>

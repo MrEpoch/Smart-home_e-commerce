@@ -2,32 +2,32 @@ import prisma from "../db";
 import jwt from "jsonwebtoken";
 
 export const Invalidate_REFRESH_TOKEN = async (token: string) => {
-    try {    
+  try {
     const tokenStatus = await prisma.refresh_token.findUnique({
-            where: {
-                token: token
-            },
-        });
+      where: {
+        token: token,
+      },
+    });
 
-        if (!tokenStatus) {
-            throw new Error("Token not found");
-        }
-
-        if (!tokenStatus.valid) {
-            throw new Error("Token already invalid");
-        }
-
-        await prisma.refresh_token.update({
-            where: {
-                token: token
-            },
-            data: {
-                valid: false,
-            },
-        });
-    } catch (e) {
-       console.log(e);
+    if (!tokenStatus) {
+      throw new Error("Token not found");
     }
+
+    if (!tokenStatus.valid) {
+      throw new Error("Token already invalid");
+    }
+
+    await prisma.refresh_token.update({
+      where: {
+        token: token,
+      },
+      data: {
+        valid: false,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const delete_REFRESH_TOKEN = async (token: string) => {
@@ -59,7 +59,7 @@ export const create_REFRESH_JWT = async (user: any, salt: string) => {
         name: user.name,
       },
       salt,
-      { expiresIn: "2d"}
+      { expiresIn: "2d" },
     );
 
     await prisma.refresh_token.create({
@@ -82,7 +82,7 @@ export const create_ACCESS_JWT = async (user: any, salt: string) => {
       name: user.name,
     },
     salt,
-    { expiresIn: "1m" }
+    { expiresIn: "1m" },
   );
   return token;
 };

@@ -23,7 +23,11 @@
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 13;
+        padding: 20px;
         width: 100%;
         height: 100%;
         overflow: auto;
@@ -43,11 +47,24 @@
         position: relative;
         z-index: 2;
         background-color: #fff;
-        margin: 10% auto;
         padding: 20px;
         width: 100%;
         max-width: 500px;
         border-radius: 5px;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    button.close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: transparent;
+        border: none;
+        font-size: 2rem;
+        color: #000;
     }
 
 </style>

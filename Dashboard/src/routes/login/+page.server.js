@@ -14,7 +14,6 @@ export const actions = {
             }),
         });
         const json = await response.json();
-        console.log(json);
         cookies.set('token', json.token);
         throw redirect(303, url.searchParams.get("redirectTo") ?? "/");
     }

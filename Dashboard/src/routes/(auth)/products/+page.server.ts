@@ -40,14 +40,13 @@ export const actions = {
                 }
             })
             const url = 'http://localhost:3249/server/admin-api/';
-            axios.post(url + 'upload-img', formData, {
+            await axios.post(url + 'upload-img', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${acc_token.data.ACCESS_TOKEN}`,
                 }
             })
-                .then(() => {
-            axios.post(url, {
+            await axios.post(url, {
                 name: data.get('name'),
                 price: data.get('price'),
                 image: data.get('image').name,
@@ -58,7 +57,7 @@ export const actions = {
                 headers: {
                     'Authorization': `Bearer ${acc_token.data.ACCESS_TOKEN}`
                 }
-            })})
+            })
             return;
         } catch (error) {
             console.log(error)

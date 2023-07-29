@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Modal from "./Modal.svelte";
-    
+
     let showModal = false;
     
     const openModal = () => {
@@ -18,7 +18,7 @@
     <form slot="form" action="?/create" method="POST" enctype="multipart/form-data">
         <label>
             <span>File</span>
-            <input type="file" name="image" />
+            <input type="file" name="image"  />
         </label>
         <label>
             <span>Name</span>
@@ -80,19 +80,34 @@
     }
 
     .modal__openForm__button {
-        padding: 10px 15px;
+        padding: 10px 20px;
         font-size: 1rem;
+        font-weight: bold;
         border-radius: 5px;
         border: none;
+        transition: all 0.3s ease-in-out;
         cursor: pointer;
-        background-color: #fff;
-        color: #000;
+        background-color: black;
+        color: white;
+        margin: 10px;
+    }
+
+    .modal__openForm__button:hover {
+        filter: brightness(0.9);
     }
 
     .modal__form__button {
         background-color: #000;
         color: #fff;
         font-weight: bold;
+    }
+
+    h1 {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+            'Open Sans', 'Helvetica Neue', sans-serif;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0;
     }
 
 </style>

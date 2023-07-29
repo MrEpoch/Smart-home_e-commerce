@@ -1,12 +1,12 @@
 <script lang="ts">
-import type { ProductType } from "./product_types";
+    import type { ProductType } from "./product_types";
 
     export let products: ProductType[] = [];
 </script>
 
     <div class="delete__container">
         {#each products as product}
-            <form action="?/delete" method="POST">
+            <form action="?/delete" method="POST" >
             <img src={product.image} alt={product.name} />
             <label>
                 <input type="text" hidden name="stripeId" value={product.stripeId}  />
@@ -14,9 +14,9 @@ import type { ProductType } from "./product_types";
             </label>
             <label>
                 <input type="text" hidden name="description" value={product.description} />
-                <p>{product.description}</p>
+                <p>{product.description.length < 30 ? product.description : product.description.substring(0, 30 - 3) + "..."}</p>
             </label>
-            <input name="id" value={product.id} />
+            <input hidden name="id" value={product.id} />
             <button class="delete__button" type="submit">Delete</button>
             </form>
         {/each}
@@ -27,6 +27,7 @@ import type { ProductType } from "./product_types";
         padding: 2rem;
         color: #fff;
         width: 100%;
+        height: 600px;
         max-width: 500px;
         display: flex;
         justify-content: center;
@@ -45,11 +46,12 @@ import type { ProductType } from "./product_types";
 
     div {
         width: 100%;
+        padding: 2rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
-        gap: 10px;
+        flex-wrap: wrap;
+        gap: 30px;
     }
 
     button {
@@ -80,5 +82,11 @@ import type { ProductType } from "./product_types";
     form h2 {
         font-size: 1.5rem;
         font-weight: bold;
+    }
+
+    form p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>
