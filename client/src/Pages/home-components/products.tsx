@@ -1,35 +1,61 @@
+import { Autocomplete, TextField } from "@mui/material";
+import { useProduct } from "../../product_context";
+import { Product, ProductContextType } from "../../Types";
+import { useState } from "react";
+import "./products.css";
+import Product_card from "./product__card";
+
 export default function Products(): React.ReactElement {
   const [search_shown, setSearch_shown] = useState<boolean>(false);
+  const { products } = useProduct() as ProductContextType;
 
   return (
     <section className="products__section">
       <h1 className="products__section__title">Product Overview</h1>
       <div className="products__section__filters">
         <div className="products__section__filters__categories">
-          <h2 className="products__section__filters__categories__all">
+          <button className="products__section__filters__categories__all">
             All products
-          </h2>
-          <h2 className="products__section__filters__categories__locks">
+          </button>
+          <button className="products__section__filters__categories__locks">
             Smart Locks
-          </h2>
-          <h2 className="products__section__filters__categories__cameras">
+          </button>
+          <button className="products__section__filters__categories__cameras">
             Security cameras
-          </h2>
-          <h2 className="products__section__filters__categories__doorbells">
+          </button>
+          <button className="products__section__filters__categories__doorbells">
             Bluetooth doorbells
-          </h2>
-          <h2 className="products__section__filters__categories__lights">
+          </button>
+          <button className="products__section__filters__categories__lights">
             Controllable Lights
-          </h2>
-          <h2 className="products__section__filters__categories__thermostats">
+          </button>
+          <button className="products__section__filters__categories__thermostats">
             Wifi Thermostats
-          </h2>
-        </div>
-        <div className="products__section__filters__sort">
-          <button className="products__section__filters__sort__filter">
-            Filter by
           </button>
         </div>
+        <div className="products__section__filters__search">
+            <Autocomplete 
+                autoHighlight
+                options={products}
+                getOptionLabel={(option: Product) => option.name}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label="Search products"
+                        variant="outlined"
+                        inputProps={{
+                            ...params.inputProps,
+                            autoComplete: "new-password",
+                        }}
+                    />)
+                }
+            />
+        </div>
+      </div>
+      <div className="products__section__products">
+        {products.map((product: Product) => (
+            <Product_card key={product.id} props={product} />
+        ))}
       </div>
     </section>
   );

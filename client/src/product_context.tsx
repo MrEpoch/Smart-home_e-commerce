@@ -4,13 +4,13 @@ import { ProductContext } from "./Contexts";
 import { useQuery } from "@tanstack/react-query";
 import { GetProducts } from "./API_requests";
 
-export function useTheme() {
+export function useProduct() {
   const value = useContext(ProductContext);
   if (value === null) return {};
   return value;
 }
 
-export default function Theme_Context({
+export default function Product_Context({
   children,
 }: ChildrenProp): React.JSX.Element {
   const [products, setProducts] = useState<Array<Product>>([]);
@@ -24,7 +24,7 @@ export default function Theme_Context({
   });
 
   useMemo(() => {
-    if (data && Array.isArray(data)) setProducts(data);
+    if (data && Array.isArray(data)) setProducts(data);  
   }, [data]);
 
   const value = {

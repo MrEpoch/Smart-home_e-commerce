@@ -4,8 +4,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { Product } from "./Types";
 
-export const request_url = "http://localhost:4528/server";
-export const request_data_url = "http://localhost:4527/server/data";
+export const request_url = "http://localhost:3248/server";
+export const request_data_url = "http://localhost:3247/server/data";
 
 export const LogIn = async (
   name: string,
@@ -16,7 +16,6 @@ export const LogIn = async (
       name,
       password,
     });
-
     await Cookies.set("refresh_token", data.REFRESH_TOKEN, {
       expires: 1,
       httpOnly: true,

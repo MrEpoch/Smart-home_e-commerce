@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import Router from "./router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Theme_Context from "./theme_context";
+import Product_Context from "./product_context";
 
 const queryClient = new QueryClient();
 
@@ -13,7 +14,9 @@ function App(): React.JSX.Element {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <Theme_Context>
-          <Router />
+            <Product_Context>
+                <Router />
+            </Product_Context>
         </Theme_Context>
       </QueryClientProvider>
     </BrowserRouter>
