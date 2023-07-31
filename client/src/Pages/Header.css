@@ -5,14 +5,12 @@
 }
 
 .navbar__container {
-  margin: 0;
+  margin: auto;
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  margin-left: 10rem;
-  margin-right: 10rem;
 }
 
 .navbar-nav > * {
