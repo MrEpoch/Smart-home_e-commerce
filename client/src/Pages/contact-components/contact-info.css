@@ -1,0 +1,13 @@
+.Contact__info {
+    
+}
+
+@media (max-width: 1250px) {
+    .Contact__info {
+        flex-direction: column;
+        margin-top: 4rem;
+        gap: 2rem;
+    }
+}
+
+

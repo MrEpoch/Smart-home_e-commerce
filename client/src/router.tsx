@@ -3,6 +3,8 @@ import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ChildrenProp } from "./Types";
 import About__page from "./Pages/About__page";
+import Contact__page from "./Pages/Contact__page";
+import Shop__page from "./Pages/Shop__page";
 
 const Footer = lazy(() => import("./Pages/Footer"));
 const Header = lazy(() => import("./Pages/Header"));
@@ -36,7 +38,12 @@ export default function Router(): React.JSX.Element {
             </Header_Footer>
           }
         />
-        <Route path="/shop" element={<Header_Footer>shop</Header_Footer>} />
+        <Route path="/shop" element={
+            <Header_Footer>
+                <Shop__page />    
+            </Header_Footer>
+        } />
+        
         <Route path="/about" element={
             <Header_Footer>
                 <About__page />
@@ -44,7 +51,10 @@ export default function Router(): React.JSX.Element {
         } />
         <Route
           path="/contact"
-          element={<Header_Footer>contact</Header_Footer>}
+          element={
+              <Header_Footer>
+                <Contact__page />
+              </Header_Footer>}
         />
         <Route path="/login" element={<Header_Footer>login</Header_Footer>} />
         <Route
