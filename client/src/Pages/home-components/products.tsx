@@ -8,28 +8,38 @@ import Product_card from "./product__card";
 export default function Products(): React.ReactElement {
   const [search_shown, setSearch_shown] = useState<boolean>(false);
   const { products } = useProduct() as ProductContextType;
+  const [filter_condition, setFilter_condition] = useState<"all" | "locks" | "cameras" | "doorbells" | "lights" | "thermostats">("all");
+
+  function filter_products(product: Product): boolean {
+    if (product.category === filter_condition) {
+      return true;
+    } else if (filter_condition === "all") {
+        return true;
+    }
+    return false;
+  }
 
   return (
     <section className="products__section">
       <h1 className="products__section__title">Product Overview</h1>
       <div className="products__section__filters">
         <div className="products__section__filters__categories">
-          <button className="products__section__filters__categories__all">
+          <button onClick={() => setFilter_condition("all")} className="products__section__filters__categories__all">
             All products
           </button>
-          <button className="products__section__filters__categories__locks">
+          <button onClick={() => setFilter_condition("locks")} className="products__section__filters__categories__locks">
             Smart Locks
           </button>
-          <button className="products__section__filters__categories__cameras">
+          <button onClick={() => setFilter_condition("cameras")} className="products__section__filters__categories__cameras">
             Security cameras
           </button>
-          <button className="products__section__filters__categories__doorbells">
+          <button onClick={() => setFilter_condition("doorbells")} className="products__section__filters__categories__doorbells">
             Bluetooth doorbells
           </button>
-          <button className="products__section__filters__categories__lights">
+          <button onClick={() => setFilter_condition("lights")} className="products__section__filters__categories__lights">
             Controllable Lights
           </button>
-          <button className="products__section__filters__categories__thermostats">
+          <button onClick={() => setFilter_condition("thermostats")} className="products__section__filters__categories__thermostats">
             Wifi Thermostats
           </button>
         </div>
@@ -53,7 +63,7 @@ export default function Products(): React.ReactElement {
         </div>
       </div>
       <div className="products__section__products">
-        {products.map((product: Product) => (
+      {products.filter(product => filter_products(product)).map((product: Product) => (
             <Product_card key={product.id} props={product} />
         ))}
       </div>

@@ -1,3 +1,13 @@
+.home__page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: auto;
+  gap: 4rem;
+  width: 100%;
+}
+
 .home-top__container {
   display: flex;
   margin-top: 7rem;
@@ -12,7 +22,6 @@
   justify-content: center;
   align-items: center;
   height: auto;
-  margin-right: 10rem;
 }
 
 .home-top__image {
@@ -23,7 +32,6 @@
 
 .home-top__text__container {
   display: grid;
-  margin-left: 10rem;
   flex-direction: column;
   justify-content: center;
 }
@@ -60,7 +68,6 @@
 }
 
 .main__home__container {
-  background-color: #eee;
   min-height: auto;
   width: 100%;
 }

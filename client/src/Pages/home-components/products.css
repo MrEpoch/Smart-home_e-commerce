@@ -1,12 +1,9 @@
 .products__section {
     display: flex;
     flex-direction: column;
-    margin-right: 10rem;
-    margin-left: 10rem;
-    gap: 3rem;
+    gap: 4rem;
+    margin-bottom: 4rem;
 }
-
-
 
 .products__section__filters {
     display: flex;
@@ -26,7 +23,6 @@
 .products__section__filters__categories button {
     font-size: 1rem;
     padding: 0.5rem 1rem;
-    background-color: #fff;
     border-radius: 20px;   
     border: 2px solid black;
 }
@@ -108,8 +104,6 @@
 
 @media (max-width: 1200px) {
     .products__section {
-        margin-right: 5rem;
-        margin-left: 5rem;
     }
 
     .products__section__filters__categories button {
@@ -123,8 +117,6 @@
 
 @media screen and (max-width: 1000px) {
     .products__section {
-        margin-right: 4rem;
-        margin-left: 4rem;
     }
 
     .products__section__filters {

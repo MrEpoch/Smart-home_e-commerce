@@ -1,0 +1,31 @@
+.about__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: auto;
+    gap: 4rem;
+}
+
+.about__header__top-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+.about__header__top-text span {
+    font-size: 2rem;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    font-weight: 500;
+    font-family: "Anton", sans-serif;
+}
+
+.about__header__image {
+    height: 400px;
+    object-fit: cover;
+}

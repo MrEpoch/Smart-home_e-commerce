@@ -15,7 +15,9 @@ function App(): React.JSX.Element {
       <QueryClientProvider client={queryClient}>
         <Theme_Context>
             <Product_Context>
-                <Router />
+                <div className="d-flex flex-column">
+                    <Router />
+                </div>
             </Product_Context>
         </Theme_Context>
       </QueryClientProvider>
