@@ -1,0 +1,66 @@
+.about__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: auto;
+    gap: 4rem;
+}
+
+.about__header__top-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3rem;
+    width: 100%;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+.about__header__top-text span {
+    font-size: 2rem;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    font-weight: 500;
+    font-family: "Anton", sans-serif;
+}
+
+.about__header__image {
+    height: 400px;
+    object-fit: cover;
+}
+
+.about__header__goal-card__icon {
+    width: 30%;
+    align-self: center;
+}
+
+.about__header__goal-cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.about__header__goal-card {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    display: flex;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.about__header__goal-card img {
+}
+
+.about__header__goal-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}

@@ -1,0 +1,134 @@
+.products__section {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    margin-bottom: 4rem;
+}
+
+.products__section__filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.products__section__filters__categories {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.products__section__filters__categories button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;   
+    border: 2px solid black;
+}
+
+.products__section__filters__search {
+    width: 100%;
+    max-width: 250px;
+}
+
+.home__page__product__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 370px;
+    height: 400px;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.products__section__products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.home__page__product__card__img {
+    width: 100%;
+    height: 300px;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.home__page__product__card__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.home__page__product__card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.home__page__product__card__body h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.home__page__product__card__body__price {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.home__page__product__card__body button {
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    border-radius: 20px;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 1200px) {
+    .products__section {
+    }
+
+    .products__section__filters__categories button {
+        padding: 0.3rem 0.8rem;
+        background-color: #fff;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        border: 2px solid black;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .products__section {
+    }
+
+    .products__section__filters {
+        flex-direction: column;
+        gap: 3rem;
+        margin-top: 3rem;
+    }
+
+    .products__section__filters__categories {
+    }
+
+    .products__section__filters__categories button {
+        font-size: 1rem;
+   }
+}
