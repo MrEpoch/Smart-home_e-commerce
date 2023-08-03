@@ -18,22 +18,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.post(
-  "/server/normal-login",
+  "/server-normal/normal-login",
   body("password").isString().isLength({ min: 1 }),
   handleError,
   create_normal_user,
 );
 app.post(
-  "/server/normal-signup",
+  "/server-normal/normal-signup",
   body("email").isEmail(),
   body("password").isString().isLength({ min: 1 }),
   handleError,
   log_in_normal,
 );
 
-app.get("/server/normal-token", create_access_normal);
+app.get("/server-normal/normal-token", create_access_normal);
 
-app.use("/server/normal-api", protectRoute, router);
+app.use("/server-normal/normal-api", protectRoute, router);
 app.use("/uploads", express.static("uploads"));
 
 export default app;

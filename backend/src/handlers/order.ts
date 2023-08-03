@@ -9,7 +9,7 @@ export const getOrders = async (
   try {
     const orders = await prisma.order.findMany({
       where: {
-        userId: req.user.id,
+        belongsToId: req.user.id,
       },
     });
     res.json(orders);

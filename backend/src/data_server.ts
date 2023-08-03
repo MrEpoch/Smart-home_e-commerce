@@ -11,6 +11,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.get("/server/data", getProducts);
-app.get("server/data/:id", getProduct);
+app.get("/server/data/:id", getProduct);
 
 export default app;

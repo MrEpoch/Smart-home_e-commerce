@@ -18,16 +18,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.post(
-  "/server/login",
+  "/server-admin/login",
   body("email").isString().isEmail(),
   body("password").isString().isLength({ min: 1 }),
   handleError,
   log_in_admin,
 );
 
-app.get("/server/admin-token", create_access_admin);
+app.get("/server-admin/admin-token", create_access_admin);
 
-app.use("/server/admin-api", protectRoute, router);
-app.use("/uploads", express.static("uploads"));
+app.use("/server-admin/admin-api", protectRoute, router);
 
 export default app;

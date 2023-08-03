@@ -62,24 +62,19 @@ router.post("/", create_product);
 router.post("/upload-img", (req, res) => {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      console.log(err);
       res.status(400);
       res.json(err);
       return;
     } else if (err) {
-      console.log(err);
       res.status(400);
       res.json(err);
       return;
+    } else { 
+        res.status(201);
+        res.json("Image uploaded successfully!");
+        return;
     }
-    console.log("moved to end");
-    res.status(201);
-    res.json("Image uploaded successfully!");
-    return;
   });
-  res.status(202);
-  res.json("It works like a magic");
-  return;
 });
 
 router.delete("/:id", delete_product);

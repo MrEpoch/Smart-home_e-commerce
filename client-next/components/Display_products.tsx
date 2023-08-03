@@ -3,7 +3,7 @@ import "./products.css";
 import Shop__page_filter from "./Filter_search";
 
 const getProducts = async () => {
-    const response = await fetch("http://localhost:3247/server/data/?take=10&skip=0=");
+    const response = await fetch("http://165.232.120.122/server/data/?take=10&skip=0=");
     const data = await response.json();
     return data;
 }
