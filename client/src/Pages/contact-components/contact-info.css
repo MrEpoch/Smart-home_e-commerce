@@ -1,5 +1,5 @@
 .Contact__info {
-    
+    min-height: 100svh;
 }
 
 @media (max-width: 1250px) {

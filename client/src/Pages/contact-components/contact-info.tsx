@@ -4,7 +4,7 @@ import "./contact-info.css";
 
 export default function ContactInfo() {
     return (
-        <div className="Contact__info d-flex align-items-center justify-content-between">
+        <div className="Contact__info d-flex align-items-center justify-content-between w-100 h-100">
             <div className="Contact__info__container">
                 <div className="Contact__info__container__text">
                     <h1>Contact Us</h1>

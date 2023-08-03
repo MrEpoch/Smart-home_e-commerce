@@ -25,7 +25,7 @@ export default function Page() {
 ]
 
     return (
-        <div className="container">
+        <div className="container text-center text-lg-start h-100 bg-body-tertiary">
              <div className="about__header__top-text">
                 <h1 className="about__header__title">We are <span>SmartUp</span></h1>
                 <p>
@@ -37,7 +37,7 @@ export default function Page() {
                     to be of highest quality and use for your home.
                 </p>
             </div>
-            <Image width={300} height={200} src={House} alt="House design" className="
+            <Image width={800} height={300} src={House} alt="House design" className="
                 about__header__image
                 w-100  flex 
             "/>
