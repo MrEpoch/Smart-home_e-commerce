@@ -25,8 +25,8 @@ export default function Page() {
 ]
 
     return (
-        <div className="container text-center text-lg-start h-100 bg-body-tertiary">
-             <div className="about__header__top-text">
+        <div className="container text-center text-lg-start h-100">
+             <div className="mb-5 about__header__top-text">
                 <h1 className="about__header__title">We are <span>SmartUp</span></h1>
                 <p>
                     <span>Our goals</span>
@@ -39,9 +39,9 @@ export default function Page() {
             </div>
             <Image width={800} height={300} src={House} alt="House design" className="
                 about__header__image
-                w-100  flex 
+                w-100  flex mb-5
             "/>
-            <div className="about__header__goal-cards">
+            <div className="about__header__goal-cards mb-5 mt-5">
                 {goalCards.map((card, index) => (
                     <div key={index} className="card about__header__goal-card card">
                         <Image width={300} height={200} src={card.image} alt="Card icon" className="card-img-top about__header__goal-card__icon"/>

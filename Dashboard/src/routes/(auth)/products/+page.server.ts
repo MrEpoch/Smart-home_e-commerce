@@ -10,7 +10,7 @@ export async function load ({ cookies }) {
             }
         })
         const url = 'http://165.232.120.122/server-admin/admin-api/';
-        const res = await axios(url + "?take=5&skip=0", {
+        const res = await axios.get(url + "?take=5&skip=0", {
             headers: {
                 'Authorization': `Bearer ${token.data.ACCESS_TOKEN}`
             }

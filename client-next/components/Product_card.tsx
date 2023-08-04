@@ -1,7 +1,7 @@
 import { Product } from "@/types/Type";
 import Image from "next/image";
 
-export default function Product_card({ props }: { props: Product}): React.ReactElement {
+export default function Product_card({ props }: { props: Product }): React.ReactElement {
     return (
         <div className="home__page__product__card">
             <div className="home__page__product__card__img">

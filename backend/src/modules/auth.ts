@@ -127,11 +127,11 @@ async function access_give(
       case "TokenExpiredError":
         res.status(401);
         res.send(e.name);
-        break;
+        return;
       case "JsonWebTokenError":
         res.status(401);
         res.send(e.name);
-        break;
+        return;
     }
     res.status(401);
     res.send({ message: "Not authorized for connection" });

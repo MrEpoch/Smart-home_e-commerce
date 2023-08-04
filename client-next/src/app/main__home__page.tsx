@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Display_products from "@/components/Display_products";
+import Link from "next/link";
 
 export default function Main__home(): React.ReactElement {
 
@@ -49,6 +50,7 @@ export default function Main__home(): React.ReactElement {
         ))}
       </div>
       <Display_products />
+      <Link href="/shop">More</Link>
     </div>
   );
 }
