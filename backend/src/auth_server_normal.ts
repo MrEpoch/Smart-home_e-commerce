@@ -34,6 +34,5 @@ app.post(
 app.get("/server-normal/normal-token", create_access_normal);
 
 app.use("/server-normal/normal-api", protectRoute, router);
-app.use("/uploads", express.static("uploads"));
 
 export default app;

@@ -9,16 +9,18 @@ export async function load ({ cookies }) {
                 'Authorization': `Bearer ${token_r}`
             }
         })
-        const url = 'http://165.232.120.122/server-admin/admin-api/';
+        const url = 'http://localhost:3249/server-admin/admin-api/';
         const res = await axios.get(url + "?take=5&skip=0", {
             headers: {
                 'Authorization': `Bearer ${token.data.ACCESS_TOKEN}`
             }
         })
+        console.log(res.data);
         return {
             products: res.data
     }}
-    catch (e) {
+    catch (e: any) {
+        if (e.response.data && (e.response.data.name === "TokenExpiredError" || e.response.data.name === "JsonWebTokenError")) cookies.delete('token');
         console.log(e);
     }
 }
@@ -27,25 +29,29 @@ export const actions = {
     create: async ({ cookies, request }) => {
         try {
             const data = await request.formData();
-            const token = cookies.get('token')
+            const token = await cookies.get('token')
 
             const image_name = crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
-            data.set('image', data.get('image'), image_name + '.' + data.get('image').name.split('.').pop());
+            await data.set('image', await data.get('image'), image_name + '.' + await data.get('image').name.split('.').pop());
             const formData = new FormData();
-            formData.append('image', data.get('image'));
+            formData.append('image', await data.get('image'));
 
-            const acc_token = await axios.get('http://165.232.120.122/server-admin/admin-token', {
+            const acc_token = await axios.get('http://localhost:3249/server-admin/admin-token', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            const url = 'http://165.232.120.122/server-admin/admin-api/';
-            await axios.post(url + 'upload-img', formData, {
+            const url = 'http://localhost:3249/server-admin/admin-api/';
+            console.log("before upload", formData.get('image'), acc_token.data.ACCESS_TOKEN);
+            const imgUpload = await fetch('http://localhost:3249/server-admin/admin-api/upload-img', {
+                method: "POST",
+                body: formData,
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Accept':'application/json',
                     'Authorization': `Bearer ${acc_token.data.ACCESS_TOKEN}`,
                 }
             })
+            console.log("after upload", imgUpload);
             await axios.post(url, {
                 name: data.get('name'),
                 price: data.get('price'),

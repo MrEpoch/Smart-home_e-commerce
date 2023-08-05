@@ -82,7 +82,7 @@ export const create_ACCESS_JWT = async (user: any, salt: string) => {
       name: user.name,
     },
     salt,
-    { expiresIn: "1m" },
+    { expiresIn: "3m" },
   );
   return token;
 };

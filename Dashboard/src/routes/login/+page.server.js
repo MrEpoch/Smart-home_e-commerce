@@ -14,6 +14,9 @@ export const actions = {
             }),
         });
         const json = await response.json();
+        if (!json.token) {
+            throw redirect(303, "/login");
+        }
         cookies.set('token', json.token);
         throw redirect(303, url.searchParams.get("redirectTo") ?? "/");
     }

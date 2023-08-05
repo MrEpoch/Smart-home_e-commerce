@@ -16,6 +16,7 @@ const router = Router();
 export const storage = multer.diskStorage({
   destination: function (req: Request, file, cb) {
     try {
+      console.log("destination", file);
       cb(null, "uploads/");
     } catch (e) {
       console.log(e);
@@ -45,6 +46,7 @@ export const upload = multer({
       file.mimetype == "image/jpg" ||
       file.mimetype == "image/jpeg"
     ) {
+      console.log("filter passed");
       cb(null, true);
     } else {
       cb(null, false);
@@ -60,14 +62,17 @@ router.get("/account", get_admin);
 
 router.post("/", create_product);
 router.post("/upload-img", (req, res) => {
+  console.log("uploading image");
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       res.status(400);
       res.json(err);
+      console.log(err);  
       return;
     } else if (err) {
       res.status(400);
-      res.json(err);
+        res.json(err);
+        console.log(err);
       return;
     } else { 
         res.status(201);
@@ -75,6 +80,7 @@ router.post("/upload-img", (req, res) => {
         return;
     }
   });
+  res.send("Well, we fucked up");
 });
 
 router.delete("/:id", delete_product);

@@ -38,5 +38,6 @@ export const product_case_error = (err, res: Response, next: NextFunction) => {
     case err.name === "UnauthorizedError":
       break;
   }
-  next();
+    res.status(500);
+    res.send({ name: "serverErr" });
 };

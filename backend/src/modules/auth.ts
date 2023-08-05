@@ -27,9 +27,8 @@ export const protect_admin_api_route = async (
 ) => {
   const token = bearer_check(req.headers.authorization, res);
   try {
-    const user = await jwt.verify(token, process.env.ACCESS_ADMIN_SECRET);
+    const user = await jwt.verify(token, process.env.ACCESS_ADMIN_SECRET);  
     req.user = user;
-    console.log("It went through");
     next();
   } catch (e) {
     res.status(401);

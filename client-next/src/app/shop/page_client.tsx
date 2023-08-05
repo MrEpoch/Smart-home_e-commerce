@@ -12,9 +12,9 @@ export default function Client__page({ data }: { data: number }) {
     }
 
     return (
-        <>
+        <div className="">
             <Display_products skip={skip} />
-            <Pagination count={data} onChange={handleChange} variant="outlined" shape="rounded" />            
-        </>
+            <Pagination className="d-flex justify-content-center" count={data} onChange={handleChange} variant="outlined" shape="rounded" />            
+        </div>
     )
 }
