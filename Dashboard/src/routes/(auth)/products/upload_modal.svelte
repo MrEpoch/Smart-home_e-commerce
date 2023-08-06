@@ -18,7 +18,7 @@
     <form slot="form" action="?/create" method="POST" enctype="multipart/form-data">
         <label>
             <span>File</span>
-            <input type="file" name="image"  />
+            <input name="image" type="file" />
         </label>
         <label>
             <span>Name</span>

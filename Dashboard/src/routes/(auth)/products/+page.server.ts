@@ -30,11 +30,16 @@ export const actions = {
         try {
             const data = await request.formData();
             const token = await cookies.get('token')
+            const image_file = await data.get('image');
 
-            const image_name = crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
-            await data.set('image', await data.get('image'), image_name + '.' + await data.get('image').name.split('.').pop());
+            if (!image_file) throw new Error('Image is required');
+
+            const image_name = crypto.getRandomValues(new Uint32Array(1))[0].toString(16);            
+            const image_ext = image_file.name.split('.').pop();
+            const unique_image_name = `${image_name}.${image_ext}`;
+            data.set('image', image_file, unique_image_name);
             const formData = new FormData();
-            formData.append('image', await data.get('image'));
+            formData.append('image', image_file, unique_image_name);
 
             const acc_token = await axios.get('http://165.232.120.122/server-admin/admin-token', {
                 headers: {
@@ -43,10 +48,17 @@ export const actions = {
             })
             const url = 'http://165.232.120.122/server-admin/admin-api/';
             console.log("before upload", formData.get('image'), acc_token.data.ACCESS_TOKEN);
+            const imgUpload = await fetch('http://165.232.120.122/server-admin/admin-api/upload-img', {
+                method: "POST",
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${await acc_token.data.ACCESS_TOKEN}`,
+                }
+            })
             await axios.post(url, {
                 name: data.get('name'),
                 price: data.get('price'),
-                image: data.get('image').name,
+                image: unique_image_name,
                 description: data.get('description'),
                 long_description: data.get('long_description'),
                 stripeId: data.get('stripeId')
@@ -55,13 +67,7 @@ export const actions = {
                     'Authorization': `Bearer ${acc_token.data.ACCESS_TOKEN}`
                 }
             });
-            const imgUpload = await fetch('http://165.232.120.122/server-admin/admin-api/upload-img', {
-                method: "POST",
-                body: formData,
-                headers: {
-                    'Authorization': `Bearer ${acc_token.data.ACCESS_TOKEN}`,
-                }
-            })
+            
             console.log("after upload", imgUpload);
 
             return;
