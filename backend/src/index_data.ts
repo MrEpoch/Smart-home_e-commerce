@@ -1,3 +1,5 @@
+// VERIFIED
+
 import app from "./data_server";
 import * as dotenv from "dotenv";
 dotenv.config();

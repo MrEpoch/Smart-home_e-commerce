@@ -1,3 +1,5 @@
+// VERIFIED
+
 import express from "express";
 import router from "./Routes/router-admin_api";
 import cors from "cors";
@@ -20,7 +22,7 @@ app.use(morgan("dev"));
 app.post(
   "/server-admin/login",
   body("email").isString().isEmail(),
-  body("password").isString().isLength({ min: 1 }),
+  body("password").isString().isLength({ min: 8 }),
   handleError,
   log_in_admin,
 );

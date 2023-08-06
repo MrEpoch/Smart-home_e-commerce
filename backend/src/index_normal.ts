@@ -1,3 +1,5 @@
+// VERIFIED
+
 import app from "./auth_server_normal";
 import * as dotenv from "dotenv";
 dotenv.config();

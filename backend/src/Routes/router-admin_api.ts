@@ -9,75 +9,68 @@ import {
   getProducts,
   update_product,
 } from "../handlers/products";
-import multer from "multer";
+import multer, { Multer } from "multer";
+import path from "path";
 
 const router = Router();
 
-export const storage = multer.diskStorage({
-  destination: function (req: Request, file, cb) {
-    try {
-      console.log("destination", file);
-      cb(null, "uploads/");
-    } catch (e) {
-      console.log(e);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"), null);
+declare global {
+    namespace Express {
+        interface Request {
+            file: Multer.File;
+        }
     }
+}
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
   },
-  filename: function (
-    req: Request,
-    file,
-    cb: (error: Error | null, filename: string) => void,
-  ) {
-    try {
-      const file_name = file.originalname.toLowerCase().split(" ").join("-");
-      cb(null, file_name);
-    } catch (e) {
-      console.log(e);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"), null);
+  filename: function (req, file, cb) {
+    // Generate a unique filename with a timestamp and the original file extension
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, file.fieldname + '-' + uniqueSuffix + ext);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5MB file size limit (adjust as needed)
+  },
+  fileFilter: function (req, file, cb) {
+    // Check if the uploaded file is an image (you can add more checks here)
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only images are allowed.'));
     }
   },
 });
 
-export const upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg"
-    ) {
-      console.log("filter passed");
-      cb(null, true);
-    } else {
-      cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
-    }
-  },
-}).single("image");
-
 router.get("/", getProducts);
 router.get("/:id", getProduct);
-
 router.get("/account", get_admin);
 
 router.post("/", create_product);
-router.post("/upload-img", (req, res) => {
-  console.log("uploading image");
-  upload(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      res.status(400);
-      res.json(err);
-      console.log(err);  
-      return;
-    } else if (err) {
-      res.status(400);
-        res.json(err);
-        console.log(err);
+router.post("/upload-img", upload.single("image"), (req, res) => {
+  try {
+    
+    if (!req.file) {
+      res.status(400).send("No file uploaded.");
       return;
     }
-  });
-  res.status(200);
-  res.send("image uploaded successfully");
+
+    res.status(200).json({ message: "image uploaded successfully" });
+    return;
+  } catch (error) {
+      if (!res.headersSent) {
+          res.status(500).json({ message: "error uploading image", data: error });
+      }
+      console.log(error);
+      return;
+  }
 });
 
 router.delete("/:id", delete_product);
@@ -86,9 +79,10 @@ router.put("/:id", update_product);
 
 router.post(
   "/signup",
-  body("username").isString().isLength({ min: 0, max: 30 }),
+  body("firstName").isString().isLength({ min: 1 }),
+  body("lastName").isString().isLength({ min: 1 }),
   body("email").isEmail(),
-  body("password").isString().isLength({ min: 1 }),
+  body("password").isString().isLength({ min: 8 }),
   handleError,
   create_admin_user,
 );

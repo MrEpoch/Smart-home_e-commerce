@@ -116,7 +116,7 @@ export const update_product = async (req: Request, res: Response) => {
     );
     res.status(201);
     res.json(product);
-      return;
+    return;
   } catch (e) {
     console.log(e);
     res.status(401);
@@ -139,7 +139,7 @@ export const update_product_noImage = async (req: Request, res: Response) => {
       },
     });
     res.json(product);
-      return;
+    return;
   } catch (e) {
     console.log(e);
     res.status(401);

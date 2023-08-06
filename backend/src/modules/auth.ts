@@ -24,14 +24,18 @@ export const protect_admin_api_route = async (
   req: RequestWithUser,
   res: Response,
   next: NextFunction,
-) => {
-  const token = bearer_check(req.headers.authorization, res);
+): Promise<void> => {
   try {
-    const user = await jwt.verify(token, process.env.ACCESS_ADMIN_SECRET);  
+    const token = bearer_check(req.headers.authorization, res);
+    const user = await jwt.verify(token, process.env.ACCESS_ADMIN_SECRET);
     req.user = user;
     next();
+    return;
   } catch (e) {
-    res.status(401).send(e);
+    if (!res.headersSent) {
+        res.status(401).send(e);
+    }
+    console.log(e);
     return;
   }
 };
@@ -40,15 +44,18 @@ export const protect_normal_api_route = async (
   req: RequestWithUser,
   res: Response,
   next: NextFunction,
-) => {
-  const token = bearer_check(req.headers.authorization, res);
+): Promise<void> => {
   try {
+    const token = bearer_check(req.headers.authorization, res);
     const user = await jwt.verify(token, process.env.ACCESS_NORMAL_SECRET);
     req.user = user;
     next();
+    return;
   } catch (e) {
     console.log(e);
-    res.status(401).send(e);
+    if (!res.headersSent) {
+        res.status(401).send(e);
+    }
     return;
   }
 };
@@ -57,25 +64,41 @@ export const create_access_admin = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const token = bearer_check(req.headers.authorization, res);
-  await access_give(
-    res,
-    process.env.ACCESS_ADMIN_SECRET,
-    token,
-    process.env.REFRESH_ADMIN_SECRET,
-  );
-  return;
+  try {
+      const token = bearer_check(req.headers.authorization, res);
+      await access_give(
+        res,
+        process.env.ACCESS_ADMIN_SECRET,
+        token,
+        process.env.REFRESH_ADMIN_SECRET,
+      );
+      return;
+  } catch (e) {
+    if (!res.headersSent) {
+      res.status(500).json({ message: "Internal server error", data: e });
+    }
+    console.log(e);
+    return;
+  }
 };
 
-export const create_access_normal = async (req: Request, res: Response) => {
-  const token = bearer_check(req.headers.authorization, res);
-  await access_give(
-    res,
-    process.env.ACCESS_NORMAL_SECRET,
-    token,
-    process.env.REFRESH_NORMAL_SECRET,
-  );
-  return;
+export const create_access_normal = async (req: Request, res: Response): Promise<void> => {
+  try {
+      const token = bearer_check(req.headers.authorization, res);
+      await access_give(
+        res,
+        process.env.ACCESS_NORMAL_SECRET,
+        token,
+        process.env.REFRESH_NORMAL_SECRET,
+      );
+      return;
+  } catch (e) {
+    if (!res.headersSent) {
+        res.status(500).json({ message: "Internal server error", data: e });
+    }
+    console.log(e);
+    return;
+  }
 };
 
 async function access_give(
@@ -101,7 +124,7 @@ async function access_give(
       return;
     }
 
-    if (database_check.valid === false) {
+    if (!database_check.valid) {
       res.status(401).send({ name: "TokenExpiredError" });
       return;
     }
@@ -109,7 +132,7 @@ async function access_give(
     const ACCESS_TOKEN = await create_ACCESS_JWT(
       {
         id: user.id,
-        name: user.name,
+        email: user.email,
       },
       secret,
     );
@@ -130,18 +153,24 @@ async function access_give(
   }
 }
 function bearer_check(bearer: string, res: Response): string {
-  if (!bearer) {
-    res.status(401).send({
-      name: "UnauthorizedError",
-    });
-    return;
-  }
+  try {  
+      if (!bearer) {
+        res.status(401).send({
+          name: "UnauthorizedError",
+        });
+        return;
+      }
 
-  const [, token] = bearer.split(" ");
+      const [, token] = bearer.split(" ");
 
-  if (!token) {
+      if (!token) {
+        res.status(401).json({ name: "UnauthorizedError" });
+        return;
+      }
+      return token;
+  } catch (e) {
+    console.log(e);
     res.status(401).json({ name: "UnauthorizedError" });
     return;
   }
-  return token;
 }

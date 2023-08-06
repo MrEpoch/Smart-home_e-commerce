@@ -1,3 +1,5 @@
+// VALIDATED
+
 import prisma from "../db";
 import jwt from "jsonwebtoken";
 
@@ -27,6 +29,7 @@ export const Invalidate_REFRESH_TOKEN = async (token: string) => {
     });
   } catch (e) {
     console.log(e);
+    return e;
   }
 };
 
@@ -39,6 +42,7 @@ export const delete_REFRESH_TOKEN = async (token: string) => {
     });
   } catch (e) {
     console.log(e);
+    return;
   }
 };
 
@@ -56,7 +60,7 @@ export const create_REFRESH_JWT = async (user: any, salt: string) => {
     const token = await jwt.sign(
       {
         id: user.id,
-        name: user.name,
+        email: user.email,
       },
       salt,
       { expiresIn: "2d" },
@@ -72,17 +76,23 @@ export const create_REFRESH_JWT = async (user: any, salt: string) => {
     return token;
   } catch (e) {
     console.log(e);
+    return;
   }
 };
 
 export const create_ACCESS_JWT = async (user: any, salt: string) => {
-  const token = await jwt.sign(
-    {
-      id: user.id,
-      name: user.name,
-    },
-    salt,
-    { expiresIn: "3m" },
-  );
-  return token;
+  try {
+    const token = await jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      salt,
+      { expiresIn: "3m" },
+    );
+    return token;
+  } catch (e) {
+    console.log(e);
+    return;
+  }
 };

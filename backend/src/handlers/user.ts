@@ -16,12 +16,10 @@ export const get_user = async (
       },
     });
     if (!user) {
-      res.status(401);
-      res.json({ message: "Invalid email" });
+      res.status(401).json({ message: "Invalid email" });
       return;
     }
-    res.status(200);
-    res.json(user);
+    res.status(200).json(user);
     return;
   } catch (e) {
     e.type = "getAccount";
@@ -43,12 +41,10 @@ export const get_admin = async (
       },
     });
     if (!user) {
-      res.status(401);
-      res.json({ message: "Invalid email" });
+      res.status(401).json({ message: "Invalid email" });
       return;
     }
-    res.status(200);
-    res.json(user);
+    res.status(200).json(user);
     return;
   } catch (e) {
     e.type = "getAccount";
@@ -77,12 +73,13 @@ export const create_normal_user = async (
       user,
       process.env.REFRESH_NORMAL_SECRET as string,
     );
-    res.status(200);
-    res.json({ token });
+    res.status(200).json({ token });
     return;
   } catch (e) {
     e.type = "signUp";
-    next(e);
+    if (!res.headersSent) {
+        res.status(500).json({ message: "Internal server error", data: e });
+    }
     return;
   }
 };
@@ -108,12 +105,13 @@ export const create_admin_user = async (
       user,
       process.env.REFRESH_ADMIN_SECRET as string,
     );
-    res.status(200);
-    res.json({ token });
+    res.status(200).json({ token });
     return;
   } catch (e) {
     e.type = "signUp";
-    next(e);
+    if (!res.headersSent) {
+        res.status(500).json({ message: "Internal server error", data: e });
+    }
     return;
   }
 };
@@ -123,13 +121,21 @@ export const log_in_normal = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  await log_in_details(
-    req,
-    res,
-    next,
-    process.env.REFRESH_NORMAL_SECRET as string,
-  );
-  return;
+  try {
+    await log_in_details(
+      req,
+      res,
+      next,
+      process.env.REFRESH_NORMAL_SECRET as string,
+    );
+    return;
+  } catch (e) {
+    if (!res.headersSent) {
+      res.status(500).json({ message: "Internal server error", data: e });
+    }
+    console.log(e);
+    return;
+  }
 };
 
 export const log_in_admin = async (
@@ -137,13 +143,21 @@ export const log_in_admin = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  await log_in_details(
-    req,
-    res,
-    next,
-    process.env.REFRESH_ADMIN_SECRET as string,
-  );
-  return;
+  try {
+      await log_in_details(
+        req,
+        res,
+        next,
+        process.env.REFRESH_ADMIN_SECRET as string,
+      );
+       return;
+  } catch (e) {
+    if (!res.headersSent) {
+      res.status(500).json({ message: "Internal server error", data: e });
+    }
+    console.log(e);
+    return;
+  }
 };
 
 const log_in_details = async (
@@ -160,22 +174,19 @@ const log_in_details = async (
     });
 
     if (!user) {
-      res.status(401);
-      res.json({ message: "Invalid email" });
+      res.status(401).json({ message: "Invalid email" });
       return;
     }
 
     const isValid = await comparePasswords(req.body.password, user.password);
 
     if (!isValid) {
-      res.status(401);
-      res.json({ message: "Invalid password" });
+      res.status(401).json({ message: "Invalid password" });
       return;
     }
 
     const token = await create_REFRESH_JWT(user, salt);
-    res.status(200);
-    res.json({ token });
+    res.status(200).json({ token });
     return;
   } catch (e) {
     e.type = "signIn";
@@ -195,16 +206,13 @@ const creation_check = async (
     });
 
     if (emailCheck) {
-      res.status(409);
-      res.json({ message: "Email already exists" });
+      res.status(409).json({ message: "Email already exists" });
       return false;
     }
   } catch (e) {
     e.type = "creation_check";
-    res.status(500);
-    res.json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
     return false;
   }
   return true;
 };
-
