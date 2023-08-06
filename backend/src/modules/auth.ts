@@ -31,8 +31,7 @@ export const protect_admin_api_route = async (
     req.user = user;
     next();
   } catch (e) {
-    res.status(401);
-    res.send(e);
+    res.status(401).send(e);
     return;
   }
 };
@@ -49,8 +48,7 @@ export const protect_normal_api_route = async (
     next();
   } catch (e) {
     console.log(e);
-    res.status(401);
-    res.send(e);
+    res.status(401).send(e);
     return;
   }
 };
@@ -95,8 +93,7 @@ async function access_give(
     });
 
     if (!database_check) {
-      res.status(401);
-      res.send({
+      res.status(401).send({
         name: "NotFoundToken",
         message:
           "Token was not found but it true, which is weird, cause it means someone has salt",
@@ -105,8 +102,7 @@ async function access_give(
     }
 
     if (database_check.valid === false) {
-      res.status(401);
-      res.send({ name: "TokenExpiredError" });
+      res.status(401).send({ name: "TokenExpiredError" });
       return;
     }
 
@@ -118,29 +114,24 @@ async function access_give(
       secret,
     );
 
-    res.status(200);
-    res.send({ ACCESS_TOKEN });
+    res.status(200).send({ ACCESS_TOKEN });
     return;
   } catch (e) {
     switch (e.name) {
       case "TokenExpiredError":
-        res.status(401);
-        res.send(e.name);
+        res.status(401).send(e.name);
         return;
       case "JsonWebTokenError":
-        res.status(401);
-        res.send(e.name);
+        res.status(401).send(e.name);
         return;
     }
-    res.status(401);
-    res.send({ message: "Not authorized for connection" });
+    res.status(401).send({ message: "Not authorized for connection" });
     return;
   }
 }
 function bearer_check(bearer: string, res: Response): string {
   if (!bearer) {
-    res.status(401);
-    res.send({
+    res.status(401).send({
       name: "UnauthorizedError",
     });
     return;
@@ -149,8 +140,7 @@ function bearer_check(bearer: string, res: Response): string {
   const [, token] = bearer.split(" ");
 
   if (!token) {
-    res.status(401);
-    res.json({ name: "UnauthorizedError" });
+    res.status(401).json({ name: "UnauthorizedError" });
     return;
   }
   return token;

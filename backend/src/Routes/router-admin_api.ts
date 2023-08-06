@@ -74,13 +74,10 @@ router.post("/upload-img", (req, res) => {
         res.json(err);
         console.log(err);
       return;
-    } else { 
-        res.status(201);
-        res.json("Image uploaded successfully!");
-        return;
     }
   });
-  res.send("Well, we fucked up");
+  res.status(200);
+  res.send("image uploaded successfully");
 });
 
 router.delete("/:id", delete_product);

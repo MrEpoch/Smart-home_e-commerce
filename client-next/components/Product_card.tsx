@@ -1,12 +1,13 @@
 import { Product } from "@/types/Type";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Product_card({ props }: { props: Product }): React.ReactElement {
     return (
         <div className="home__page__product__card">
-            <div className="home__page__product__card__img">
+            <Link href={"/shop/" + props.id}className="home__page__product__card__img">
                 <Image width={300} height={400} src={props.image} alt={props.name} />
-            </div>
+            </Link>
             <div className="home__page__product__card__body">
                 <h3>{props.name}</h3>
                 <p>{props.description}</p>

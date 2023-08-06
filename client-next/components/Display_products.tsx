@@ -3,14 +3,14 @@ import "./products.css";
 import Shop__page_filter from "./Filter_search";
 
 const getProducts = async (skip: number) => {
-    const response = await fetch("http://165.232.120.122/server/data/?take=10&skip=" + skip);
+    const response = await fetch("http://165.232.120.122/server/data/?take=10&skip=" + skip, { next: { revalidate: 60 * 5 } });
     const data = await response.json();
     return data;
 }
 
 export default async function Display_products({ skip=0 }) {
 
-  const products = await getProducts(skip);
+  const products = await getProducts(skip ? skip : 0);
 
   return (
     <section className="products__section">

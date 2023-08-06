@@ -49,7 +49,7 @@ export default function Main__home(): React.ReactElement {
         </div>
         ))}
       </div>
-      <Display_products />
+      <Display_products skip={0} />
       <Link href="/shop">More</Link>
     </div>
   );
