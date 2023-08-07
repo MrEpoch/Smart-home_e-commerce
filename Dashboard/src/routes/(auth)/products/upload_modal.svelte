@@ -1,6 +1,9 @@
 <script lang="ts">
 	import Modal from "./Modal.svelte";
 
+    export let token: string;
+    export let image_name: string;
+
     let showModal = false;
     
     const openModal = () => {
@@ -10,16 +13,46 @@
     const closeModal = () => {
         showModal = false;
     }
+
+    let image_file: any;
+
+    async function handleUpload(e: any): Promise<void> {
+        const formData = new FormData();
+        formData.append('image', image_file);
+        const acc_token = await fetch('http://165.232.120.122/server-admin/admin-token', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+        });
+        const acc_token_json = await acc_token.json();
+        await fetch('http://165.232.120.122/server-admin/admin-api/upload-img', {
+            method: "POST",
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${await acc_token_json.ACCESS_TOKEN}`,
+            }
+        })
+        return;
+    }
+
+    function handleChanges(e: any): void {
+        image_file = e.target.files[0];
+        const ext = image_file.name.split('.').pop();
+        image_name = image_name + '.' + ext;
+        return;
+    }
+ 
 </script>
 
 <button class="modal__openForm__button" on:click={openModal}>Upload</button>
 <Modal {showModal} {closeModal}>
     <h1 slot="header">Create Product</h1>
-    <form slot="form" action="?/create" method="POST" enctype="multipart/form-data">
+    <form slot="form" action="?/create" on:submit={handleUpload} method="POST" enctype="multipart/form-data">
         <label>
             <span>File</span>
-            <input name="image" type="file" />
+            <input name="image" on:change={handleChanges} type="file" />
         </label>
+        <input type="hidden" name="image_name" value={image_name} />
         <label>
             <span>Name</span>
             <input type="text" name="name" />
@@ -49,7 +82,6 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-
     }
 
     form label {
@@ -110,4 +142,4 @@
         margin: 0;
     }
 
-</style>
+ </style>
