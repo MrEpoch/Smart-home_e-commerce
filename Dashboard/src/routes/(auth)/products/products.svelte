@@ -1,13 +1,51 @@
 <script lang="ts">
     import type { ProductType } from "./product_types";
+    import ErrorSvg from "./error-svg.svg";    
 
+    function checkImage(url: string) {
+      var request = new XMLHttpRequest();
+      request.open("GET", url, true);
+      request.send();
+      request.onload = function() {
+        if (request.status == 200) //if(statusText == OK)
+        {
+          return true;
+        } else {
+          return false;
+        }
+    }};
+
+    let image: File;
+
+    function ChangeImage(e) {
+        image = e.target.files[0];
+        return;
+    } 
+
+    async function UploadImage(event, product) {
+        try {
+            if (!image) {
+                alert("Please select an image");
+                return;
+            }
+            const formData = new FormData();
+            formData.append("image", image);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+  
     export let products: ProductType[] = [];
 </script>
 
     <div class="delete__container">
         {#each products as product}
             <form action="?/delete" method="POST" >
-            <img src={product.image} alt={product.name} />
+                <img src={checkImage(product.image) ? product.image : ErrorSvg} alt={product.name} />
+                {#if !checkImage(product.image)}
+                    <input type="text" name="image" placeholder="Image URL" on:change={ChangeImage}/>
+                    <button type="button" onclick={() => UploadImage}>Upload Image</button>
+                {/if}    
             <label>
                 <input type="text" hidden name="stripeId" value={product.stripeId}  />
                 <h2>{product.name}</h2>
@@ -40,8 +78,9 @@
     }
 
     form img {
+        max-width: 350px;
         width: 100%;
-        height: auto;
+        height: 200px;
     }
 
     div {

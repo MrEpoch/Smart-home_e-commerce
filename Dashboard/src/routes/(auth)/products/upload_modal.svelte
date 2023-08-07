@@ -1,11 +1,9 @@
 <script lang="ts">
 	import Modal from "./Modal.svelte";
 
-    export let token: string;
+    let showModal = false;
     export let image_name: string;
 
-    let showModal = false;
-    
     const openModal = () => {
         showModal = true;
     }
@@ -14,45 +12,39 @@
         showModal = false;
     }
 
-    let image_file: any;
-
-    async function handleUpload(e: any): Promise<void> {
+    let image: File;
+    function handleFileChange(event: any) {
+        image = event.target.files[0];
+        const ext = image.name.split(".").pop();
+        image_name = image.name.replace("." + ext, "");
+    }
+    function handleUpload(event: any) {
+        event.preventDefault();
         const formData = new FormData();
-        formData.append('image', image_file);
-        const acc_token = await fetch('http://165.232.120.122/server-admin/admin-token', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-        });
-        const acc_token_json = await acc_token.json();
-        await fetch('http://165.232.120.122/server-admin/admin-api/upload-img', {
+        formData.append("image", image, image_name);
+
+        fetch("?/upload", {
             method: "POST",
             body: formData,
-            headers: {
-                'Authorization': `Bearer ${await acc_token_json.ACCESS_TOKEN}`,
-            }
         })
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res);
+            });
         return;
     }
 
-    function handleChanges(e: any): void {
-        image_file = e.target.files[0];
-        const ext = image_file.name.split('.').pop();
-        image_name = image_name + '.' + ext;
-        return;
-    }
- 
 </script>
 
 <button class="modal__openForm__button" on:click={openModal}>Upload</button>
 <Modal {showModal} {closeModal}>
     <h1 slot="header">Create Product</h1>
-    <form slot="form" action="?/create" on:submit={handleUpload} method="POST" enctype="multipart/form-data">
+    <form slot="form" action="?/create" method="POST" enctype="multipart/form-data">
         <label>
             <span>File</span>
-            <input name="image" on:change={handleChanges} type="file" />
+            <input name="image" type="file" on:change={handleFileChange} />
+            <input type="hidden" name="image_name" value={image_name} />
         </label>
-        <input type="hidden" name="image_name" value={image_name} />
         <label>
             <span>Name</span>
             <input type="text" name="name" />

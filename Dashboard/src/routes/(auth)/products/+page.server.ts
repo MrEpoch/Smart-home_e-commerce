@@ -16,7 +16,8 @@ export async function load ({ cookies }) {
         })
         console.log(res.data);
         return {
-            products: res.data
+            products: res.data,
+            image_name: crypto.getRandomValues(new Uint32Array(1))[0].toString(16)
         }
     }
     catch (e: any) {
@@ -31,40 +32,24 @@ export const actions = {
             const data = await request.formData();
             const token = await cookies.get('token')
 
-            const acc_token = await axios.get('http://165.232.120.122/server-admin/admin-token', {
+            const token_data = await fetch('http://165.232.120.122/server-admin/admin-token', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
-
-            const image_file = data.get("image");
-            const image_name = crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
-
-            const ext = image_file.name.split('.').pop();
-                
-            data.set("image", data.get("image") ,image_name + '.' + ext);
-
-            const formData = new FormData();
-            formData.append('image', data.get('image'));
-            await fetch('http://165.232.120.122/server-admin/admin-api/upload-img', {
-                method: "POST",
-                body: formData,
-                headers: {
-                    'Authorization': `Bearer ${await acc_token.data.ACCESS_TOKEN}`,
-                }
-            })
+            const acc_token = await token_data.json();
 
             const url = 'http://165.232.120.122/server-admin/admin-api/';
             await axios.post(url, {
                 name: data.get('name'),
                 price: data.get('price'),
-                image: data.get("image_name"),
+                image: data.get('image_name'),
                 description: data.get('description'),
                 long_description: data.get('long_description'),
                 stripeId: data.get('stripeId')
             }, {
                 headers: {
-                    'Authorization': `Bearer ${acc_token.data.ACCESS_TOKEN}`
+                    'Authorization': `Bearer ${acc_token.ACCESS_TOKEN}`
                 }
             });
 
@@ -95,5 +80,30 @@ export const actions = {
         } catch (e) {
             console.log(e);
         }
-    }
+    },
+
+    upload: async ({ cookies, request }) => {
+        try {
+            const data = await request.formData();
+            const token = await cookies.get('token')
+
+            const token_data = await fetch('http://165.232.120.122/server-admin/admin-token', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const acc_token = await token_data.json();
+
+            await fetch('http://165.232.120.122/server-admin/admin-api/upload-img', {
+                method: "POST",
+                body: data,
+                headers: {
+                    'Authorization': `Bearer ${acc_token.ACCESS_TOKEN}`,
+                }
+            })
+        } catch (e) {
+            console.log(e);
+        }
+    },
 }
