@@ -9,66 +9,16 @@ import {
   getProducts,
   update_product,
 } from "../handlers/products";
-import multer, { Multer } from "multer";
-import path from "path";
+import { create_upload_token } from "../modules/auth";
 
 const router = Router();
 
-declare global {
-    namespace Express {
-        interface Request {
-            file: Multer.File;
-        }
-    }
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname.split(" ").join("_"));
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5, // 5MB file size limit (adjust as needed)
-  },
-  fileFilter: function (req, file, cb) {
-    // Check if the uploaded file is an image (you can add more checks here)
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only images are allowed.'));
-    }
-  },
-});
 
 router.get("/", getProducts);
 router.get("/:id", getProduct);
 router.get("/account", get_admin);
 
 router.post("/", create_product);
-router.post("/upload-img", upload.single("image"), (req, res) => {
-  try {
-    
-    if (!req.file) {
-      res.status(400).send("No file uploaded.");
-      return;
-    }
-
-    res.status(200).json({ message: "image uploaded successfully" });
-    return;
-  } catch (error) {
-      if (!res.headersSent) {
-          res.status(500).json({ message: "error uploading image", data: error });
-      }
-      console.log(error);
-      return;
-  }
-});
 
 router.delete("/:id", delete_product);
 
@@ -83,5 +33,8 @@ router.post(
   handleError,
   create_admin_user,
 );
+
+router.get("/upload-token", create_upload_token); 
+
 
 export default router;

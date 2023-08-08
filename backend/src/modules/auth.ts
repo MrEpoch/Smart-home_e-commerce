@@ -60,6 +60,25 @@ export const protect_normal_api_route = async (
   }
 };
 
+export const protect_upload_api_route = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction,
+): Promise<void> => {
+    try {
+        const token = bearer_check(req.headers.authorization, res);
+        await jwt.verify(token, process.env.UPLOAD_SECRET);
+        next()
+        return;
+    } catch (e) {
+        console.log(e);
+        if (!res.headersSent) {
+            res.status(500).send(e);
+        }
+        return;
+    }
+};
+
 export const create_access_admin = async (
   req: Request,
   res: Response,
@@ -101,11 +120,32 @@ export const create_access_normal = async (req: Request, res: Response): Promise
   }
 };
 
+export const create_upload_token = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const token = bearer_check(req.headers.authorization, res);
+        await access_give(
+            res,
+            process.env.UPLOAD_SECRET,
+            token,
+            process.env.ACCESS_ADMIN_SECRET,
+            "3h"
+        );
+        return;
+    } catch (e) {
+        if (!res.headersSent) {
+            res.status(500).json({ message: "Internal server error", data: e });
+        }
+        console.log(e);
+        return;
+    }
+}
+
 async function access_give(
   res: Response,
   secret: string,
   token: string,
   salt: string,
+  expiration?: string
 ): Promise<void> {
   try {
     const user = jwt.verify(token, salt);
@@ -135,6 +175,7 @@ async function access_give(
         email: user.email,
       },
       secret,
+      expiration ?? "3m"
     );
 
     res.status(200).send({ ACCESS_TOKEN });

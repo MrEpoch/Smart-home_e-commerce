@@ -1,35 +1,26 @@
 import multer from "multer";
 import { Request } from "express";
 
-export const storage = multer.diskStorage({
-  destination: function (req: Request, file, cb) {
-    console.log(file, "1");
-    cb(null, "uploads/");
+const storage = multer.diskStorage({
+    destination: function (req: Request, file, cb) {
+    cb(null, 'uploads/');
   },
-  filename: function (
-    req: Request,
-    file,
-    cb: (error: Error | null, filename: string) => void,
-  ) {
-    console.log(file, "2");
-    const file_name = file.originalname.toLowerCase().split(" ").join("-");
-    cb(null, file_name);
+    filename: function (req: Request, file, cb) {
+    cb(null, file.originalname.split(" ").join("_").toLowerCase());
   },
 });
 
 export const upload = multer({
   storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg"
-    ) {
-      console.log(file, "3");
+  limits: {
+    fileSize: 1024 * 1024 * 20, // 5MB file size limit (adjust as needed)
+  },
+    fileFilter: function (req: Request, file, cb) {
+    // Check if the uploaded file is an image (you can add more checks here)
+    if (file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {
-      cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
+      cb(new Error('Only images are allowed.'));
     }
   },
 });

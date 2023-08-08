@@ -1,6 +1,7 @@
+import type { Cookies } from "@sveltejs/kit";
 import axios from "axios";
 
-export async function load ({ cookies }) {
+export async function load ({ cookies }: { cookies: Cookies }) {
     try {
         const token_r = cookies.get('token');
         const token = await axios.get('http://165.232.120.122/server-admin/admin-token', {
@@ -14,9 +15,15 @@ export async function load ({ cookies }) {
                 'Authorization': `Bearer ${token.data.ACCESS_TOKEN}`
             }
         })
-        console.log(res.data);
+        const upload_token = await axios.get(url + 'upload-token/', {
+            headers: {
+                'Authorization': `Bearer ${token.data.ACCESS_TOKEN}`
+            }
+        });
+
         return {
             products: res.data,
+            token: upload_token.data,
             image_name: crypto.getRandomValues(new Uint32Array(1))[0].toString(16)
         }
     }
@@ -27,10 +34,10 @@ export async function load ({ cookies }) {
 }
 
 export const actions = {
-    create: async ({ cookies, request, response }) => {
+    create: async ({ cookies, request }: { cookies: Cookies, request: Request }) => {
         try {
             const data = await request.formData();
-            const token = await cookies.get('token')
+            const token = cookies.get('token')
 
             const token_data = await fetch('http://165.232.120.122/server-admin/admin-token', {
                 headers: {
@@ -60,7 +67,7 @@ export const actions = {
         }
     },
 
-    delete: async ({ cookies, request }) => {
+    delete: async ({ cookies, request }: { cookies: Cookies, request: Request }) => {
         try {
             const data = await request.formData();
             const token = cookies.get('token')
@@ -87,21 +94,7 @@ export const actions = {
             const data = await request.formData();
             const token = await cookies.get('token')
 
-            const token_data = await fetch('http://165.232.120.122/server-admin/admin-token', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            const acc_token = await token_data.json();
-
-            await fetch('http://165.232.120.122/server-admin/admin-api/upload-img', {
-                method: "POST",
-                body: data,
-                headers: {
-                    'Authorization': `Bearer ${acc_token.ACCESS_TOKEN}`,
-                }
-            })
+            
         } catch (e) {
             console.log(e);
         }

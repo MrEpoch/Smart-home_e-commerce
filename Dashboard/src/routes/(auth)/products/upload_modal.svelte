@@ -3,6 +3,7 @@
 
     let showModal = false;
     export let image_name: string;
+    export let token: string;
 
     const openModal = () => {
         showModal = true;
@@ -12,25 +13,37 @@
         showModal = false;
     }
 
-    let image: File;
-    function handleFileChange(event: any) {
-        image = event.target.files[0];
-        const ext = image.name.split(".").pop();
-        image_name = image.name.replace("." + ext, "");
-    }
-    function handleUpload(event: any) {
-        event.preventDefault();
-        const formData = new FormData();
-        formData.append("image", image, image_name);
+    async function handleSubmit(event) {
+        const data = new FormData(this);
+        
+        if (typeof data.get('image') !== 'object') {
+            return;
+        }
 
-        fetch("?/upload", {
-            method: "POST",
+        const formData = new FormData();
+        const image: File = data.get('image') as File;
+        const extension = image.name.split('.').pop();
+        const filename = `${image_name}.${extension}`;
+        const new_image = new File([image], filename, { type: image.type });
+
+        formData.append('image', new_image);
+
+        await fetch('http://165.232.120.122/serve/data/upload-img', {
+            method: 'POST',
             body: formData,
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                console.log(res);
-            });
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token 
+            }
+        });
+
+        data.set('image_name', filename);
+
+        await fetch(this.action, {
+            method: 'POST',
+            body: data
+        });
+
         return;
     }
 
@@ -39,12 +52,13 @@
 <button class="modal__openForm__button" on:click={openModal}>Upload</button>
 <Modal {showModal} {closeModal}>
     <h1 slot="header">Create Product</h1>
-    <form slot="form" action="?/create" method="POST" enctype="multipart/form-data">
+    <form slot="form" action="?/create" on:submit|preventDefault={handleSubmit} method="POST" enctype="multipart/form-data">
         <label>
             <span>File</span>
-            <input name="image" type="file" on:change={handleFileChange} />
+            <input name="image" type="file"/>
             <input type="hidden" name="image_name" value={image_name} />
         </label>
+        <input type="hidden" name="image_name" value={image_name} />
         <label>
             <span>Name</span>
             <input type="text" name="name" />

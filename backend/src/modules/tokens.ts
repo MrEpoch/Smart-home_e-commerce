@@ -80,7 +80,7 @@ export const create_REFRESH_JWT = async (user: any, salt: string) => {
   }
 };
 
-export const create_ACCESS_JWT = async (user: any, salt: string) => {
+export const create_ACCESS_JWT = async (user: any, salt: string, expiration: string) => {
   try {
     const token = await jwt.sign(
       {
@@ -88,7 +88,7 @@ export const create_ACCESS_JWT = async (user: any, salt: string) => {
         email: user.email,
       },
       salt,
-      { expiresIn: "3m" },
+      { expiresIn: expiration },
     );
     return token;
   } catch (e) {
