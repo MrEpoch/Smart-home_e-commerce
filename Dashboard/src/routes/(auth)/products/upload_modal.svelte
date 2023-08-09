@@ -27,15 +27,13 @@
             const filename = `${image_name}.${extension}`;
             const new_image = new File([image], filename, { type: image.type });
 
-            console.log(token);
             formData.append('image', new_image);
 
             await fetch('http://165.232.120.122/server/data/upload-img', {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': 'Bearer ' + token 
+                    'Authorization': `Bearer ${token}`
                 }
             });
 

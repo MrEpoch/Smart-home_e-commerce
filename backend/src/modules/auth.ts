@@ -170,6 +170,8 @@ async function access_give(
         }
     }
 
+    console.log(user);
+
     const ACCESS_TOKEN = await create_ACCESS_JWT(
       {
         id: user.id,

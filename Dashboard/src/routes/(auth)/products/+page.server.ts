@@ -21,10 +21,9 @@ export async function load ({ cookies }: { cookies: Cookies }) {
             }
         });
 
-        console.log(upload_token.data)
         return {
             products: res.data,
-            token: upload_token.data,
+            token: upload_token.data.ACCESS_TOKEN,
             image_name: crypto.getRandomValues(new Uint32Array(1))[0].toString(16)
         }
     }
@@ -47,7 +46,7 @@ export const actions = {
             })
             const acc_token = await token_data.json();
 
-            const url = 'http://165.232.120.122/server-admin/admin-api/';
+            const url = 'http://165.232.120.122/server-admin/admin-api/product';
             await axios.post(url, {
                 name: data.get('name'),
                 price: data.get('price'),
@@ -78,7 +77,7 @@ export const actions = {
                 }
             })
 
-            const url = 'http://165.232.120.122/server-admin/admin-api/';
+            const url = 'http://165.232.120.122/server-admin/admin-api/product/';
             const dataDelete = await axios.delete(url + data.get('id'), {
                 headers: {
                     'Authorization': `Bearer ${acc_token.data.ACCESS_TOKEN}`
