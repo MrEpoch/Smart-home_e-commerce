@@ -15,12 +15,13 @@ export async function load ({ cookies }: { cookies: Cookies }) {
                 'Authorization': `Bearer ${token.data.ACCESS_TOKEN}`
             }
         })
-        const upload_token = await axios.get(url + 'upload-token/', {
+        const upload_token = await axios.get(url + 'uploadToken/', {
             headers: {
                 'Authorization': `Bearer ${token.data.ACCESS_TOKEN}`
             }
         });
 
+        console.log(upload_token.data)
         return {
             products: res.data,
             token: upload_token.data,

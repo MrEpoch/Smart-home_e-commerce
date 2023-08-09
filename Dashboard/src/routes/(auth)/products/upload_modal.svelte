@@ -14,37 +14,42 @@
     }
 
     async function handleSubmit(event) {
-        const data = new FormData(this);
-        
-        if (typeof data.get('image') !== 'object') {
-            return;
-        }
-
-        const formData = new FormData();
-        const image: File = data.get('image') as File;
-        const extension = image.name.split('.').pop();
-        const filename = `${image_name}.${extension}`;
-        const new_image = new File([image], filename, { type: image.type });
-
-        formData.append('image', new_image);
-
-        await fetch('http://165.232.120.122/serve/data/upload-img', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer ' + token 
+        try {
+            const data = new FormData(this);
+            
+            if (typeof data.get('image') !== 'object') {
+                return;
             }
-        });
 
-        data.set('image_name', filename);
+            const formData = new FormData();
+            const image: File = data.get('image') as File;
+            const extension = image.name.split('.').pop();
+            const filename = `${image_name}.${extension}`;
+            const new_image = new File([image], filename, { type: image.type });
 
-        await fetch(this.action, {
-            method: 'POST',
-            body: data
-        });
+            console.log(token);
+            formData.append('image', new_image);
 
-        return;
+            await fetch('http://165.232.120.122/server/data/upload-img', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + token 
+                }
+            });
+
+            data.set('image_name', filename);
+
+            await fetch(this.action, {
+                method: 'POST',
+                body: data
+            });
+
+            return;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 </script>

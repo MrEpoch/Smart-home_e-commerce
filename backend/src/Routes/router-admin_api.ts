@@ -15,14 +15,14 @@ const router = Router();
 
 
 router.get("/", getProducts);
-router.get("/:id", getProduct);
+router.get("/product/:id", getProduct);
 router.get("/account", get_admin);
 
-router.post("/", create_product);
+router.post("/product", create_product);
 
-router.delete("/:id", delete_product);
+router.delete("/product/:id", delete_product);
 
-router.put("/:id", update_product);
+router.put("/product/:id", update_product);
 
 router.post(
   "/signup",
@@ -34,7 +34,7 @@ router.post(
   create_admin_user,
 );
 
-router.get("/upload-token", create_upload_token); 
+router.get("/uploadToken", (req, res, next) => { console.log("before upload create"); next() },create_upload_token); 
 
 
 export default router;

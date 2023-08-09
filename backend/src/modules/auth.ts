@@ -128,7 +128,8 @@ export const create_upload_token = async (req: Request, res: Response): Promise<
             process.env.UPLOAD_SECRET,
             token,
             process.env.ACCESS_ADMIN_SECRET,
-            "3h"
+            "3h",
+            false
         );
         return;
     } catch (e) {
@@ -145,28 +146,28 @@ async function access_give(
   secret: string,
   token: string,
   salt: string,
-  expiration?: string
+  expiration: string = "3m",
+  refresh: boolean = true
 ): Promise<void> {
   try {
     const user = jwt.verify(token, salt);
-    const database_check = await prisma.refresh_token.findUnique({
-      where: {
-        token: token,
-      },
-    });
-
-    if (!database_check) {
-      res.status(401).send({
-        name: "NotFoundToken",
-        message:
-          "Token was not found but it true, which is weird, cause it means someone has salt",
-      });
-      return;
-    }
-
-    if (!database_check.valid) {
-      res.status(401).send({ name: "TokenExpiredError" });
-      return;
+    if (refresh) {  
+        const database_check = await prisma.refresh_token.findUnique({
+          where: {
+            token: token,
+          },
+        });
+        if (!database_check) {
+          res.status(401).send({
+            name: "NotFoundToken",
+            message:
+              "Token was not found but it true, which is weird, cause it means someone has salt",
+          });
+          return;
+        } else if (!database_check.valid) {
+          res.status(401).send({ name: "TokenExpiredError" });
+          return;
+        }
     }
 
     const ACCESS_TOKEN = await create_ACCESS_JWT(
@@ -175,9 +176,8 @@ async function access_give(
         email: user.email,
       },
       secret,
-      expiration ?? "3m"
+      expiration,
     );
-
     res.status(200).send({ ACCESS_TOKEN });
     return;
   } catch (e) {
