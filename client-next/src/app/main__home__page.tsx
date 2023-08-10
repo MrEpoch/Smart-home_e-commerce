@@ -33,7 +33,7 @@ export default function Main__home(): React.ReactElement {
     <div className="container-fluid main__home__container">
       <div className="main__home__popular__container">
       {data.map((item, index) => (
-          <div key={index} className="main__home__popular card">  
+          <Link href="/shop" key={index} className="main__home__popular card">  
             <Image
               width={300}
               height={250}
@@ -46,7 +46,7 @@ export default function Main__home(): React.ReactElement {
                 {item.name}
               </h5>
             </div>
-        </div>
+        </Link>
         ))}
       </div>
       <Display_products skip={0} />

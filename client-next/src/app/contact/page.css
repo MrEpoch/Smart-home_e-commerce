@@ -1,0 +1,18 @@
+.Contact__info {
+    min-height: 100svh;
+}
+
+.Contact__info__design img {
+    max-width: 500px;
+    width: 100%;
+}
+
+@media (max-width: 1250px) {
+    .Contact__info {
+        flex-direction: column;
+        margin-top: 4rem;
+        gap: 2rem;
+    }
+}
+
+

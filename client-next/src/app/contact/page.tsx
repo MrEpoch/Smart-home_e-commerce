@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Form_my from "./Form";
 import Design from "@/assets/undraw_contact.svg";
+import "./page.css";
 
 export default function Page() {
     return (

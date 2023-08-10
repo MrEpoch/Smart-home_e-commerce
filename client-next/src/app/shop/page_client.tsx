@@ -21,7 +21,7 @@ export default function Client__page({ data, pages }: { data: Product[], pages: 
     }
 
     return (
-        <div className="">
+        <div className="mt-5 mb-5">
             <Display_products data={products} />
             <Pagination className="d-flex justify-content-center" count={pages} onChange={handleChange} variant="outlined" shape="rounded" />            
         </div>
