@@ -1,7 +1,7 @@
 .products__section {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
+    gap: 6rem;
     margin-bottom: 4rem;
 }
 
@@ -41,6 +41,7 @@
     max-width: 370px;
     height: 400px;
     padding: 2rem;
+    background-color: #fafafa;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     margin-bottom: 2rem;

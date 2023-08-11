@@ -28,7 +28,12 @@ app.post(
 );
 
 app.post(
-  "/server-normal/normal-signup",
+    "/server-normal/normal-signup",
+(req, res, next) => {
+    console.log(req.body);
+    next();
+},
+
   body("email").isEmail(),
   body("firstName").isString().isLength({ min: 1 }),
   body("lastName").isString().isLength({ min: 1 }),

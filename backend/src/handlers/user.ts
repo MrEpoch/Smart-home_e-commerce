@@ -76,6 +76,7 @@ export const create_normal_user = async (
     res.status(200).json({ token });
     return;
   } catch (e) {
+    console.log(e);
     e.type = "signUp";
     if (!res.headersSent) {
         res.status(500).json({ message: "Internal server error", data: e });

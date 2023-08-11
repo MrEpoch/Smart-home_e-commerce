@@ -24,7 +24,7 @@ const login_content = {
 
 export default function AuthForm({ mode }: { mode: "login" | "signup" } ) {
     const content = mode === "signup" ? signup_content : login_content; 
-
+    const router = useRouter();
     const [error, setError] = useState("");
 
     return (

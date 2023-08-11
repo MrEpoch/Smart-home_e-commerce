@@ -12,14 +12,19 @@ export async function LogIn(form: any): Promise<void> {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                firstName: form.firstName,
-                lastName: form.lastName,
                 email: form.email,
                 password: form.password
             })
         });
         const login_data = await login_response.json();
-        cookies().set("refresh_token", login_data.token)
+        cookies().set({
+            name: "refresh_token", 
+            value: login_data.token,
+            path: "/",
+            httpOnly: true,
+            sameSite: "strict",
+            secure: true
+        })
         
         redirect("/userpage");
     } catch (e) {
@@ -29,17 +34,28 @@ export async function LogIn(form: any): Promise<void> {
 
 export async function SignUp(form: any): Promise<void> {
     try {
-        console.log(form);
-        const signup_response = await fetch('http://165.232.120.122/server-normal/normal-signup/', {
+        'use server';
+        const signup_response = await fetch('http://localhost:3248/server-normal/normal-signup/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(form)
+            body: JSON.stringify({
+                firstName: form.get("firstName"),
+                lastName: form.get("lastName"),
+                email: form.get("email"),
+                password: form.get("password")
+            })
         });
         const signup_data = await signup_response.json();
-        cookies().set("refresh_token", signup_data.token)
-
+        cookies().set({
+            name: "refresh_token", 
+            value: signup_data.token,
+            path: "/",
+            httpOnly: true,
+            sameSite: "strict",
+            secure: true
+        })
         redirect("/userpage");
     } catch (e) {
         console.log(e);

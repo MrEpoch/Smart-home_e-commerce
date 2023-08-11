@@ -17,7 +17,7 @@ export default async function Page() {
     const products = await getProducts();
 
     return (
-        <div className="text-center container text-lg-start">
+        <div className="text-center container text-lg-start h-100">
         {count && <Client__page pages={count} data={products} />}
         </div>
     )
