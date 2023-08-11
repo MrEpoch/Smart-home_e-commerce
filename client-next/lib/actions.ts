@@ -11,7 +11,12 @@ export async function LogIn(form: any): Promise<void> {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(form)
+            body: JSON.stringify({
+                firstName: form.firstName,
+                lastName: form.lastName,
+                email: form.email,
+                password: form.password
+            })
         });
         const login_data = await login_response.json();
         cookies().set("refresh_token", login_data.token)

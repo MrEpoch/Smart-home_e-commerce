@@ -8,10 +8,9 @@ async function getAccount() {
         headers: {
             "Authorization": `Bearer ${refresh_token}`
         },
-        body: JSON.stringify({ refresh_token })
     });
 
-    const token = await access_token.json();
+    const token = access_token;
 
     const account = await fetch("http://165.232.120.122/server-normal/normal-api/account", {
         headers: {
