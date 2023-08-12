@@ -12,8 +12,8 @@ export async function LogIn(form: any): Promise<void> {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: form.email,
-                password: form.password
+                email: form.get("email"),
+                password: form.get("password")
             })
         });
         const login_data = await login_response.json();
@@ -26,7 +26,7 @@ export async function LogIn(form: any): Promise<void> {
             secure: true
         })
         
-        redirect("/userpage");
+        return redirect("/userpage");
     } catch (e) {
         console.log(e);
     }
@@ -35,7 +35,7 @@ export async function LogIn(form: any): Promise<void> {
 export async function SignUp(form: any): Promise<void> {
     try {
         'use server';
-        const signup_response = await fetch('http://localhost:3248/server-normal/normal-signup/', {
+        const signup_response = await fetch('http://165.232.120.122/server-normal/normal-signup/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -56,7 +56,7 @@ export async function SignUp(form: any): Promise<void> {
             sameSite: "strict",
             secure: true
         })
-        redirect("/userpage");
+        return redirect("/userpage");
     } catch (e) {
         console.log(e);
     }

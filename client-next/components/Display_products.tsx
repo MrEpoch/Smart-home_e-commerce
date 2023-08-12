@@ -12,6 +12,7 @@ export default async function Display_products({ skip=0 }) {
 
   const products = await getProducts(skip ? skip : 0);
 
+
   return (
     <section className="products__section">
       <h1 className="products__section__title">Product Overview</h1>

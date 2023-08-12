@@ -1,11 +1,22 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { getCart } from "@/lib/api";
+import css from "./page.module.css";
 
 export default function Cart(): React.ReactNode {
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [cart, setCarts] = useState([]);
+
+  useEffect(() => {
+        (async() => {
+            const cart_data = await getCart();
+            setCarts(cart_data);
+        })();
+    }, []);
+
 
   const handle_close = () => {
     setShow(false);
@@ -18,6 +29,8 @@ export default function Cart(): React.ReactNode {
 
   return (
     <>
+      <div className={css.badge__container}>
+        <code className={css.badge__item}>{cart.length}</code>
       <button
         onClick={() => setShow(true)}
         type="button"
@@ -25,6 +38,7 @@ export default function Cart(): React.ReactNode {
       >
         <ShoppingCartIcon />
       </button>
+      </div>
       {loading && <div>loading...</div>}
       <Modal
         className="cart_modal"

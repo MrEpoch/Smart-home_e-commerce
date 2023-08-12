@@ -18,6 +18,9 @@ export default function Shop__page_filter({ products }: { products: Product[] })
         return false;
       }
 
+
+  
+
     return (
      <div className="products__section">
         <div className="products__section__filters">

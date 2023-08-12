@@ -6,6 +6,7 @@ import Header from './header';
 import Footer from './footer';
 import { Suspense } from 'react';
 import Loading from './loading';
+import { getCart } from '@/lib/api';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,15 +15,18 @@ export const metadata: Metadata = {
   description: 'A sample e-commerce site built with Next.js',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+  const cart = await getCart();
+
   return (
     <html lang="en">
       <body className={inter.className}>
-         <Header />
+         <Header cart={cart} />
          <Suspense fallback={<Loading />}>
             {children}
         </Suspense>

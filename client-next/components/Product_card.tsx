@@ -1,8 +1,10 @@
 import { Product } from "@/types/Type";
 import Image from "next/image";
+import { addToCart } from "@/lib/api";
 import Link from "next/link";
 
 export default function Product_card({ props }: { props: Product }): React.ReactElement {
+
     return (
         <div className="home__page__product__card">
             <Link href={"/shop/" + props.id}className="home__page__product__card__img">
@@ -14,7 +16,7 @@ export default function Product_card({ props }: { props: Product }): React.React
                 <div className="home__page__product__card__body__price">
                     <span>{props.price}</span>
                 </div>
-                <button className="home__page__product__card__body__btn">Add to cart</button>
+                <button onClick={() => addToCart(props)} className="home__page__product__card__body__btn">Add to cart</button>
             </div>
         </div>
     )
