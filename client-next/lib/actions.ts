@@ -29,6 +29,7 @@ export async function LogIn(form: any): Promise<void> {
         return redirect("/userpage");
     } catch (e) {
         console.log(e);
+        return redirect("/");
     }
 }
 
@@ -59,5 +60,30 @@ export async function SignUp(form: any): Promise<void> {
         return redirect("/userpage");
     } catch (e) {
         console.log(e);
+        return redirect("/");
+    }
+}
+
+export async function Payment(form: any): Promise<void> {
+    try {
+        if (form.get("order").length <= 0) return redirect("/") 
+        const payment_response = await fetch('http://165.232.120.122/server/payment/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                country: form.get("country"),
+                city: form.get("city"),
+                postalcode: form.get("postalcode"),
+                address: form.get("address"),
+                order: JSON.parse(form.get("order")),
+                phone: form.get("phone"),
+                email: form.get("email"),
+            })
+        });
+    } catch (e) {
+        console.log(e);
+        return redirect("/");
     }
 }

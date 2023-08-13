@@ -2,21 +2,26 @@
 import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { getCart } from "@/lib/api";
+import { getCart, removeFromCart } from "@/lib/api";
 import css from "./page.module.css";
+import { CartItem } from "@/types/Type";
+import Image from "next/image";
 
 export default function Cart(): React.ReactNode {
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [cart, setCarts] = useState([]);
 
-  useEffect(() => {
-        (async() => {
-            const cart_data = await getCart();
-            setCarts(cart_data);
-        })();
-    }, []);
+  async function getCart__data() {
+      const cart_data = await getCart();
+      setCarts(cart_data);
+  }
 
+  useEffect(() => {
+        (async () => {
+            await getCart__data();
+        })();
+  }, []);
 
   const handle_close = () => {
     setShow(false);
@@ -26,13 +31,23 @@ export default function Cart(): React.ReactNode {
   const handle_payment = () => {
     setLoading(true);
   };
+  
+  async function handle_remove(item: CartItem) {
+      try {
+          await removeFromCart(item);
+          setCarts(cart.filter((cart_item: CartItem) => cart_item.id !== item.id));
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
   return (
     <>
-      <div className={css.badge__container}>
-        <code className={css.badge__item}>{cart.length}</code>
-      <button
-        onClick={() => setShow(true)}
+     <div className={css.badge__container}>
+        
+        {cart.length > 0 && <code className={css.badge__item}>{cart.length}</code>}
+        <button
+      onClick={async() => {await getCart__data(); setShow(true)}}
         type="button"
         className="btn button_box bg-black text-white"
       >
@@ -41,7 +56,8 @@ export default function Cart(): React.ReactNode {
       </div>
       {loading && <div>loading...</div>}
       <Modal
-        className="cart_modal"
+        size="lg"
+        className={css.modal__container}
         show={show}
         onHide={handle_close}
         role="dialog"
@@ -50,7 +66,20 @@ export default function Cart(): React.ReactNode {
           <Modal.Title>Cart items</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Here will be cart items</p>
+      {cart.map((item: CartItem, index) => (
+          <div className={css.cart__item} key={index}>
+                <div className={css.cart__item_info}>            
+                    <Image src={item.image} alt={item.name} width={100} height={100} className={css.cart__image} />
+                    <p>{item.name}</p>
+                </div>
+                <div className={css.cart__item_control}>
+                    <p className={css.cart__para}>{item.quantity}x</p>
+                    <p className={css.cart__para}>${item.price}</p>
+                    <button onClick={async () => { await handle_remove(item)}} className="btn btn-danger">Remove</button>
+                </div>
+          </div>
+            ))
+        }
         </Modal.Body>
         <Modal.Footer>
           <button onClick={handle_payment} className="btn btn-primary">

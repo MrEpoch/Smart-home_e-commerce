@@ -42,13 +42,13 @@ body {
 }
 
 body::-webkit-scrollbar {
-  width: 0.5rem;
+  width: 0.75rem;
 }
 
 body::-webkit-scrollbar-thumb {
-  background: var(--main-color);
+  background: #999;
 }
 
 body::-webkit-scrollbar-track {
-  background-color: #333;
+  background-color: black;
 }

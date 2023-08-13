@@ -22,8 +22,13 @@ async function getAccount() {
     return data;
 }
 
-export default async function Page() {
+export async function checkAuth() {
+    const refresh_token = cookies().get("refresh_token");
+    if (!refresh_token) redirect("/login");
+}
 
+export default async function Page() {
+    await checkAuth();
     const account = await getAccount();
 
     return (

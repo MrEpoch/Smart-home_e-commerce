@@ -23,3 +23,7 @@ export type Product = {
   image: string;
   category: string;
 };
+
+export interface CartItem extends Product {
+    quantity: number;
+}

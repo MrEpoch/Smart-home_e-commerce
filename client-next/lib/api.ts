@@ -2,12 +2,20 @@
 import { cookies } from "next/headers";
 
 export async function addToCart(product: any) {
-         const check_cookie = cookies().get("cart");
+        const check_cookie = cookies().get("cart");
+        product.quantity = 1;
          if (!check_cookie) {
            cookies().set("cart", JSON.stringify([product]));
          } else {
-             const cart = JSON.parse(check_cookie?.value);
-             cart.push(product);
+             let cart = JSON.parse(check_cookie?.value);
+             console.log(cart);
+             const check_cart = cart.find((item: any) => item.id === product.id);
+             if (check_cart) {
+                 check_cart.quantity += 1;
+                 cart = [...cart.filter((item: any) => item.id !== product.id), check_cart];
+             } else {
+                 cart.push(product);
+             }    
              cookies().set("cart", JSON.stringify(cart));
              return cart;
         }
