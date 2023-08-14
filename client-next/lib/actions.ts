@@ -77,7 +77,7 @@ export async function Payment(form: any): Promise<void> {
                 city: form.get("city"),
                 postalcode: form.get("postalcode"),
                 address: form.get("address"),
-                order: JSON.parse(form.get("order")),
+                order: JSON.parse(form.get("orders")),
                 phone: form.get("phone"),
                 email: form.get("email"),
             })

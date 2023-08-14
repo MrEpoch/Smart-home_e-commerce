@@ -60,7 +60,12 @@ export const create_normal_user = async (
 ): Promise<void> => {
   try {
     const valid = await creation_check(req, res);
-    if (!valid) return;
+    if (!valid) {
+        if (!res.headersSent) {
+            res.status(408).json({ message: "Error" });
+        }
+        return;
+    }
     const user = await prisma.user.create({
       data: {
         firstName: req.body.firstName,
