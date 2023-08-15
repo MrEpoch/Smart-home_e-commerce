@@ -59,7 +59,6 @@ model Product {
     rating              Float           @default(0)
     numReviews          Int             @default(0)
     createdAt           DateTime        @default(now())
-
     orderItems          OrderItem[]
 }
 
@@ -72,10 +71,9 @@ enum status {
 model OrderItem {
     id              String          @id @default(uuid())
     belongsToId     String
-    belongsToProductId String
     createdAt       DateTime        @default(now())
     quantity        Int
-    product         Product         @relation(fields: [belongsToProductId], references: [id])
+    product         Product[]
     Order           Order          @relation(fields: [belongsToId], references: [id])
 }
 

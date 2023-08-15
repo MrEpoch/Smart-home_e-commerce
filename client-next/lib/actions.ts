@@ -66,7 +66,7 @@ export async function SignUp(form: any): Promise<void> {
 
 export async function Payment(form: any): Promise<void> {
     try {
-        if (form.get("order").length <= 0) return redirect("/") 
+        if (form.get("orders").length <= 0) return redirect("/") 
         const payment_response = await fetch('http://165.232.120.122/server/payment/', {
             method: 'POST',
             headers: {
@@ -75,13 +75,18 @@ export async function Payment(form: any): Promise<void> {
             body: JSON.stringify({
                 country: form.get("country"),
                 city: form.get("city"),
-                postalcode: form.get("postalcode"),
+                postalCode: form.get("postalcode"),
                 address: form.get("address"),
                 order: JSON.parse(form.get("orders")),
                 phone: form.get("phone"),
                 email: form.get("email"),
             })
         });
+        const payment_data = await payment_response.json();
+        if (payment_data && payment_data.url) {
+            return redirect(payment_data.url);
+        }
+        return redirect("/");
     } catch (e) {
         console.log(e);
         return redirect("/");

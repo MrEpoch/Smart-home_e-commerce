@@ -7,6 +7,9 @@ import { getProduct, getProducts, getProductsCount } from "./handlers/products";
 import { protect_upload_api_route } from "./modules/auth";
 import { upload } from "./handlers/image_upload";
 import { Multer } from "multer";
+import { createOrder, getOrder, getOrders } from "./handlers/order";
+import { body } from "express-validator";
+import { countries } from "./countries";
 
 declare global {
     namespace Express {
@@ -42,9 +45,19 @@ app.post("/server/data/upload-img", protect_upload_api_route, upload.single("ima
 });
 
 app.get("/server/data", getProducts);
-app.get("/server/data/:id", getProduct);
+app.get("/server/data/product/:id", getProduct);
 app.get("/server/data/length", getProductsCount);
 
-
+app.post("server/data/payment", 
+    body("email").isString().isEmail(),
+    body("country").isString().isIn(countries),
+    body("city").isString(),
+    body("address").isString(),
+    body("postalCode").isString(),
+    body("phone").isString(),
+    body("order").isArray()
+,createOrder);
+app.get("/server/data/payment", getOrders);
+app.get("/server/data/payment/:id", getOrder);
 
 export default app;

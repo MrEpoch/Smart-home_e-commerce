@@ -77,21 +77,29 @@ export const createOrder = async (
         apiKey: process.env.STRIPE_SECRET_KEY,
       },
     );
-    
-        const newArr = pure_product.map((item) => {
-            return await prisma.orderItem.create({});
-        });
 
     const order = await prisma.order.create({
         data: {
-           orderItems: pure_product,
+           orderItems: {
+                create: pure_product.map((item) => {
+                    return {
+                        product: item,
+                        quantity: req.body.order.find(
+                            (orderItem: any) => orderItem.id === item.id,
+                        ).quantity,
+                    };
+                }),
+           },
            address: req.body.address,
+           country: req.body.country,
+           email: req.body.email,
            city: req.body.city,
            phone: req.body.phone,
            postalCode: req.body.postalCode,
            belongsToId: req.user.id,
         },
     });
+
     res.json({ order });
     } catch (e) {
         console.log(e);
