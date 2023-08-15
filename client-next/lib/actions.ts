@@ -3,9 +3,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function LogIn(form: any): Promise<void> {
+    let isError = false;
     try {
-        const formData = new FormData();
-        formData.append("firstName", form.firstName);
         const login_response = await fetch('http://165.232.120.122/server-normal/normal-login', {
             method: 'POST',
             headers: {
@@ -24,18 +23,18 @@ export async function LogIn(form: any): Promise<void> {
             httpOnly: true,
             sameSite: "strict",
             secure: true
-        })
-        
-        return redirect("/userpage");
+        })    
     } catch (e) {
         console.log(e);
+        isError = true;
         return redirect("/");
     }
+    return !isError && redirect("/userpage");
 }
 
 export async function SignUp(form: any): Promise<void> {
+    let isError = false;
     try {
-        'use server';
         const signup_response = await fetch('http://165.232.120.122/server-normal/normal-signup/', {
             method: 'POST',
             headers: {
@@ -57,18 +56,20 @@ export async function SignUp(form: any): Promise<void> {
             sameSite: "strict",
             secure: true
         })
-        return redirect("/userpage");
     } catch (e) {
         console.log(e);
+        isError = true;
         return redirect("/");
     }
+    return !isError && redirect("/userpage");
 }
 
 export async function Payment(form: any): Promise<void> {
+    let isError = false;
+    let path = "";
     try {
         const cookie = cookies().get("cart")?.value;
-        if (form.get("orders").length <= 0) return redirect("/") 
-        const payment_data = await fetch('http://165.232.120.122/server/data/payment/', {
+        const payment_data = await fetch('http://localhost:3247/server/data/payment/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -84,10 +85,11 @@ export async function Payment(form: any): Promise<void> {
             })
         });
         console.log(payment_data);
-        return redirect("/");
     } catch (e) {
         console.log(e);
         return redirect("/");
     }
+
+    return redirect("/");
 }
 

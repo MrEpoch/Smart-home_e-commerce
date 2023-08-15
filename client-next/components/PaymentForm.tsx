@@ -1,7 +1,6 @@
 'use client';
 import { Payment } from "@/lib/actions";
 import { countries } from "@/lib/countries";
-import { CartItem } from "@/types/Type";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useState } from "react";
 
@@ -52,7 +51,6 @@ export default function PaymentForm({ orders }: { orders: string }) {
                     </div>
                 </div>
                 <input type="hidden" name="country" value={country}/>
-                <input type="hidden" name="orders" value={orders} />
                 <div className="mb-8">
                     <button type="submit" className="btn btn-primary w-100">Process payment</button>
                 </div>

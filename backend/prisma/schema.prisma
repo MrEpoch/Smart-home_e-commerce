@@ -71,10 +71,11 @@ enum status {
 model OrderItem {
     id              String          @id @default(uuid())
     belongsToId     String
+    belongsToProductId String
     createdAt       DateTime        @default(now())
     quantity        Int
-    product         Product[]
-    Order           Order          @relation(fields: [belongsToId], references: [id])
+    Product         Product         @relation(fields: [belongsToProductId], references: [id])
+    Order           Order           @relation(fields: [belongsToId], references: [id])
 }
 
 model Order {

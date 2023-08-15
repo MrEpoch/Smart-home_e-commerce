@@ -1,9 +1,9 @@
 'use client';
 
-import { useRouter } from "next/navigation";
 import { SignUp, LogIn } from "@/lib/actions";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import { Alert } from "@mui/material";
 
 const signup_content = {
     linkurl: "/login",
@@ -24,15 +24,53 @@ const login_content = {
 
 export default function AuthForm({ mode }: { mode: "login" | "signup" } ) {
     const content = mode === "signup" ? signup_content : login_content; 
-    const router = useRouter();
     const [error, setError] = useState("");
+
+    async function client_check__register(data: FormData) {
+        if (data.get("password")?.toString().trim() !== data.get("confirmPassword")?.toString().trim()) {
+            setError("Passwords do not match");
+            return false;
+        } else if (data.get("password") === null || data.get("confirmPassword") === null) {
+            setError("Password cannot be empty");
+            return false;
+        }
+
+        return await SignUp(data)
+    }
+
+    async function client_check__login(data: FormData) {
+        switch (data.get("email")?.toString().trim()) {
+            case "":
+                setError("Email cannot be empty");
+                return false;
+            case null:
+                setError("Email cannot be empty");
+                return false;
+            default:
+                break;
+        }
+
+        switch (data.get("password")?.toString().trim()) {
+            case "":
+                setError("Password cannot be empty");
+                return false;
+            case null:
+                setError("Password cannot be empty");
+                return false;
+            default:
+                break;
+        }
+
+        return await LogIn(data)
+    }
 
     return (
         <div className="text-center container text-lg-start d-flex flex-column justify-content-center" style={{ height: "100svh" }}>
             <div className="text-center">
                 <h1 className="mt-5" style={{ fontSize: "4rem" }}>{content.header}</h1>
             </div>
-            <form action={mode === "signup" ? SignUp : LogIn} className="d-flex flex-column justify-content-center align-content-center w-100 pb-4 h-75">
+            <Alert onClose={() => setError("")} severity="error" className="w-100">{error}</Alert>
+            <form action={mode === "signup" ? client_check__register : client_check__login} className="d-flex flex-column justify-content-center align-content-center w-100 pb-4 h-75">
                 {mode === "signup" && (
                     <div className="mb-8 d-flex justify-content-between">
                         <div className="form-group mb-5">

@@ -49,7 +49,7 @@ export const createOrder = async (
     const items_count = orders_client.length;
     console.log(orders_client);
     console.log(req.body.order);
-    const pure_product = orders_client.map(async (item: any) => {
+    const pure_product = await orders_client.map(async (item: any) => {
         const product = await prisma.product.findUnique({
             where: {
                 id: item.id,
@@ -57,7 +57,7 @@ export const createOrder = async (
         });
         return product;
     });
-    const orders = orders_client.map(async(item: any) => {
+    const orders = await orders_client.map(async(item: any) => {
         const product = await pure_product.find(async(product: any) => await product.id === item.id);
         if (!product) {
             res.status(401).json({ name: "createOrderErr" });
