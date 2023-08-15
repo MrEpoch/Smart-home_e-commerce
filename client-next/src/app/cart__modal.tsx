@@ -6,11 +6,13 @@ import { getCart, removeFromCart } from "@/lib/api";
 import css from "./page.module.css";
 import { CartItem } from "@/types/Type";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Cart(): React.ReactNode {
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [cart, setCarts] = useState([]);
+  const router = useRouter();
 
   async function getCart__data() {
       const cart_data = await getCart();
@@ -29,7 +31,8 @@ export default function Cart(): React.ReactNode {
   };
 
   const handle_payment = () => {
-    setLoading(true);
+      setShow(false);
+      router.push('/payment');
   };
   
   async function handle_remove(item: CartItem) {

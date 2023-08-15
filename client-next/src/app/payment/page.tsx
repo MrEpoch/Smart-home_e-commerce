@@ -2,7 +2,7 @@ import PaymentForm from "@/components/PaymentForm";
 import { cookies } from "next/headers";
 
 function getOrders() {
-    const orders = cookies().get("orders")?.value;
+    const orders = cookies().get("cart")?.value;
     if (orders) {
         return JSON.parse(orders);
     }

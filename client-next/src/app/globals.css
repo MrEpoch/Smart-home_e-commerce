@@ -52,3 +52,7 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-track {
   background-color: black;
 }
+
+.p__pay {
+    padding: 16.5px 14px;
+}

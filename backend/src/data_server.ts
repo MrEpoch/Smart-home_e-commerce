@@ -48,7 +48,7 @@ app.get("/server/data", getProducts);
 app.get("/server/data/product/:id", getProduct);
 app.get("/server/data/length", getProductsCount);
 
-app.post("server/data/payment", 
+app.post("/server/data/payment", 
     body("email").isString().isEmail(),
     body("country").isString().isIn(countries),
     body("city").isString(),

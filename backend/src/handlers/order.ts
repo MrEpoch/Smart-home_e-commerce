@@ -45,26 +45,29 @@ export const createOrder = async (
     next: NextFunction,
 ) => {
     try {
-    const items_count = req.body.order.length;
-    const orders = [];
-    const pure_product = [];
-
-    for (let i = 0; i < items_count; i++) {
+    const orders_client = JSON.parse(req.body.order);
+    const items_count = orders_client.length;
+    console.log(orders_client);
+    console.log(req.body.order);
+    const pure_product = orders_client.map(async (item: any) => {
         const product = await prisma.product.findUnique({
             where: {
-                id: req.body.order[i].id,
+                id: item.id,
             },
         });
+        return product;
+    });
+    const orders = orders_client.map(async(item: any) => {
+        const product = await pure_product.find(async(product: any) => await product.id === item.id);
         if (!product) {
             res.status(401).json({ name: "createOrderErr" });
             return;
         }
-        orders.push({
+        return {
             price: product.stripeProductId,
-            quantity: req.body.order[i].quantity,
-        });
-        pure_product.push(product);
-    }
+            quantity: item.quantity,
+        };
+    });
 
     await stripe.checkout.sessions.create(
       {
@@ -84,7 +87,7 @@ export const createOrder = async (
                 create: pure_product.map((item) => {
                     return {
                         product: item,
-                        quantity: req.body.order.find(
+                        quantity: req.find(
                             (orderItem: any) => orderItem.id === item.id,
                         ).quantity,
                     };
@@ -96,9 +99,19 @@ export const createOrder = async (
            city: req.body.city,
            phone: req.body.phone,
            postalCode: req.body.postalCode,
-           belongsToId: req.user.id,
         },
     });
+
+    if (req.user) {
+        await prisma.order.update({
+            where: {
+                id: order.id,
+            },
+            data: {
+                belongsToId: req.user.id,
+            },
+        });
+    }
 
     res.json({ order });
     } catch (e) {
