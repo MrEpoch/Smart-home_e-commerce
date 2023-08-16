@@ -39,26 +39,35 @@ export const getOrder = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
+
+async function mapOverOrders(orders: any) {
+    const ordersWithProducts = await Promise.all(
+        orders.map(async (order: any) => {
+            const product = await prisma.product.findUnique({
+                where: {
+                    id: order.id,
+                },
+            });
+            return product;
+        }),
+    );
+    return ordersWithProducts;
+}
+
+
 export const createOrder = async (
     req: any,
     res: Response,
     next: NextFunction,
 ) => {
     try {
-    const orders_client = JSON.parse(req.body.order);
+    const orders_client = req.body.order;
     const items_count = orders_client.length;
     console.log(orders_client);
     console.log(req.body.order);
-    const pure_product = await orders_client.map(async (item: any) => {
-        const product = await prisma.product.findUnique({
-            where: {
-                id: item.id,
-            },
-        });
-        return product;
-    });
-    const orders = await orders_client.map(async(item: any) => {
-        const product = await pure_product.find(async(product: any) => await product.id === item.id);
+    const pure_product = await mapOverOrders(orders_client);
+    const orders = orders_client.map((item: any) => {
+        const product = pure_product.find((product: any) => product.id === item.id);
         if (!product) {
             res.status(401).json({ name: "createOrderErr" });
             return;
@@ -69,7 +78,9 @@ export const createOrder = async (
         };
     });
 
-    await stripe.checkout.sessions.create(
+    console.log(orders);
+
+    const session = await stripe.checkout.sessions.create(
       {
         line_items: orders,
         mode: "payment",
@@ -83,22 +94,26 @@ export const createOrder = async (
 
     const order = await prisma.order.create({
         data: {
-           orderItems: {
-                create: pure_product.map((item) => {
-                    return {
-                        product: item,
-                        quantity: req.find(
-                            (orderItem: any) => orderItem.id === item.id,
-                        ).quantity,
-                    };
-                }),
-           },
            address: req.body.address,
            country: req.body.country,
            email: req.body.email,
            city: req.body.city,
            phone: req.body.phone,
            postalCode: req.body.postalCode,
+           orderItems: {
+               create: pure_product.map((item) => {
+                   return {
+                        Product: {
+                            connect: {
+                                id: item.id,
+                            },
+                        },
+                        quantity: parseInt(req.body.order.find(
+                            (orderItem: any) => orderItem.id === item.id,
+                        ).quantity)
+                   };
+               }),
+            }
         },
     });
 
@@ -113,7 +128,7 @@ export const createOrder = async (
         });
     }
 
-    res.json({ order });
+        res.json({ url: session.url });
     } catch (e) {
         console.log(e);
         if (!res.headersSent) {

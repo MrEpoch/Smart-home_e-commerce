@@ -71,7 +71,7 @@ export async function Payment(form: any): Promise<void | string> {
     try {
         const cookie = await getCart();
         console.log(cookie);
-        const payment_data = await fetch('http://localhost:3247/server/data/payment/', {
+        const payment_data = await fetch('http://165.232.120.122/server/data/payment/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -88,7 +88,6 @@ export async function Payment(form: any): Promise<void | string> {
         });
         const data = await payment_data.json();
         path = data.url;
-        console.log(data);
     } catch (e) {
         console.log(e);
         return redirect("/");
