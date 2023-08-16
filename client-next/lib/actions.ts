@@ -1,6 +1,7 @@
 'use server';
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getCart } from "./api";
 
 export async function LogIn(form: any): Promise<void> {
     let isError = false;
@@ -64,11 +65,12 @@ export async function SignUp(form: any): Promise<void> {
     return !isError && redirect("/userpage");
 }
 
-export async function Payment(form: any): Promise<void> {
+export async function Payment(form: any): Promise<void | string> {
     let isError = false;
     let path = "";
     try {
-        const cookie = cookies().get("cart")?.value;
+        const cookie = await getCart();
+        console.log(cookie);
         const payment_data = await fetch('http://localhost:3247/server/data/payment/', {
             method: 'POST',
             headers: {
@@ -84,12 +86,14 @@ export async function Payment(form: any): Promise<void> {
                 email: form.get("email"),
             })
         });
-        console.log(payment_data);
+        const data = await payment_data.json();
+        path = data.url;
+        console.log(data);
     } catch (e) {
         console.log(e);
         return redirect("/");
     }
 
-    return redirect("/");
+    return path;
 }
 

@@ -1,4 +1,5 @@
 'use server';
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export async function addToCart(product: any) {
@@ -6,6 +7,8 @@ export async function addToCart(product: any) {
         product.quantity = 1;
          if (!check_cookie) {
            cookies().set("cart", JSON.stringify([product]));
+           revalidatePath("/*");
+           return [product];
          } else {
              let cart = JSON.parse(check_cookie?.value);
              console.log(cart);
@@ -17,6 +20,7 @@ export async function addToCart(product: any) {
                  cart.push(product);
              }    
              cookies().set("cart", JSON.stringify(cart));
+             revalidatePath("/*");
              return cart;
         }
 }

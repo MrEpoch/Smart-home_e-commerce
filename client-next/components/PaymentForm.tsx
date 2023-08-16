@@ -2,24 +2,27 @@
 import { Payment } from "@/lib/actions";
 import { countries } from "@/lib/countries";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function PaymentForm({ orders }: { orders: string }) {
 
+    const router = useRouter();
     const [country, setCountry] = useState<string>("");
 
     function handle_country(event: SelectChangeEvent) {
         setCountry(event.target.value as string);
     }
 
-    console.log(orders);
-
     return (
         <div className="text-center container text-lg-start d-flex flex-column justify-content-center" style={{ height: "100svh" }}>
             <div className="text-center">
                 <h1 className="mt-5" style={{ fontSize: "4rem" }}>Fill up information</h1>
             </div>
-            <form action={Payment} className="d-flex flex-column justify-content-center align-content-center w-100 pb-4 h-75 mt-5">
+            <form action={async(data) => {
+                const url = await Payment(data);
+                router.push(url ?? "/");
+            }} className="d-flex flex-column justify-content-center align-content-center w-100 pb-4 h-75 mt-5">
                 <div className="mb-8">
                     <div className="form-group mb-5">
                         <label htmlFor="email">email</label>
