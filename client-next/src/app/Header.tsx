@@ -1,6 +1,7 @@
 import { getCart } from "@/lib/api";
 import React from "react";
-import Header_client from "./Header_client";
+import Header_client from "@/components/ClientHeader";
+import "@/styles/Header.css";
 
 async function getCart__data() {
     const cart_data = await getCart();

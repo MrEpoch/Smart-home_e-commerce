@@ -12,7 +12,7 @@ export default function Product_card({ props }: { props: Product }): React.React
             </Link>
             <div className="home__page__product__card__body">
                 <h3>{props.name}</h3>
-                <p>{props.description}</p>
+                <p>{props.description.substring(0, 30 - 3) + "..."}</p>
                 <div className="home__page__product__card__body__price">
                     <span>{props.price}</span>
                 </div>

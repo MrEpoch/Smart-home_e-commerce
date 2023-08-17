@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from './Header';
-import Footer from './footer';
+import Footer from './Footer';
 import { Suspense } from 'react';
 import Loading from './loading';
 

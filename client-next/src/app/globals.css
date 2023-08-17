@@ -41,18 +41,6 @@ body {
   width: 100%;
 }
 
-body::-webkit-scrollbar {
-  width: 0.75rem;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: #999;
-}
-
-body::-webkit-scrollbar-track {
-  background-color: black;
-}
-
 .p__pay {
     padding: 16.5px 14px;
 }

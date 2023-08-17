@@ -5,7 +5,7 @@ import Product_card from "@/components/Product_card"
 import { Product, ProductContextType } from "@/types/Type";
 import { useState } from "react";
 
-export default function Shop__page_filter({ products }: { products: Product[] }): React.JSX.Element {
+export default function Shop__page_filter({ products, search }: { products: Product[], search: any }): React.JSX.Element {
 
       const [filter_condition, setFilter_condition] = useState<"all" | "locks" | "cameras" | "doorbells" | "lights" | "thermostats">("all");
 
@@ -47,7 +47,7 @@ export default function Shop__page_filter({ products }: { products: Product[] })
             <div className="products__section__filters__search">
                 <Autocomplete 
                     autoHighlight
-                    options={products}
+                    options={search}
                     getOptionLabel={(option: Product) => option.name}
                     renderInput={(params) => (
                         <TextField

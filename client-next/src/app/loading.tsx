@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import React from "react";
-import css from "./page.module.css";
+import css from "@/styles/Home.module.css";
 
 export default function Loading() {    
   return (

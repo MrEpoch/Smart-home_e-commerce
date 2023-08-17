@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { getCart, removeFromCart } from "@/lib/api";
-import css from "../src/app/page.module.css";
+import css from "@/styles/Home.module.css";
 import { CartItem } from "@/types/Type";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

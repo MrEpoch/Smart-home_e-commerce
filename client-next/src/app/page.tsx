@@ -1,6 +1,6 @@
-import Home_top from './top__home__page';
-import './home__page.css';
-import Main__home from './main__home__page';
+import Home_top from '@/components/Home/HomeHeader';
+import "@/styles/Home.css";
+import Main__home from "@/components/Home/MainHome__page";
 
 export default async function Home() {
   return (

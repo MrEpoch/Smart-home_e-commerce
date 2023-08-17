@@ -1,5 +1,4 @@
 'use client';
-import "./Header.css";
 import React, { Suspense, lazy } from "react";
 import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import PersonIcon from "@mui/icons-material/Person";
