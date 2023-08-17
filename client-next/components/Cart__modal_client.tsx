@@ -3,27 +3,21 @@ import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { getCart, removeFromCart } from "@/lib/api";
-import css from "./page.module.css";
+import css from "../src/app/page.module.css";
 import { CartItem } from "@/types/Type";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export default function Cart(): React.ReactNode {
+export default function Cart({ cart_items }: { cart_items: CartItem[] }): React.ReactNode {
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [cart, setCarts] = useState([]);
+  const [cart, setCarts] = useState(cart_items);
   const router = useRouter();
 
   async function getCart__data() {
       const cart_data = await getCart();
       setCarts(cart_data);
   }
-
-  useEffect(() => {
-        (async () => {
-            await getCart__data();
-        })();
-  }, []);
 
   const handle_close = () => {
     setShow(false);
@@ -69,7 +63,7 @@ export default function Cart(): React.ReactNode {
           <Modal.Title>Cart items</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-      {cart.map((item: CartItem, index) => (
+      {cart.map((item: CartItem, index: number) => (
           <div className={css.cart__item} key={index}>
                 <div className={css.cart__item_info}>            
                     <Image src={item.image} alt={item.name} width={100} height={100} className={css.cart__image} />

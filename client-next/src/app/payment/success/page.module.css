@@ -1,0 +1,15 @@
+
+.h1_text {
+    font-size: 4rem;
+    font-weight: 500;
+    margin-bottom: 3rem;
+}
+
+.svg_success {
+    width: 5rem;
+    height: 5rem;
+    box-shadow: 0 0.5rem 4rem 1rem lightgreen;
+    border-radius: 50%;
+    cursor: pointer;
+    color: lightgreen;
+}

@@ -33,11 +33,27 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
+export const getProductsForSearch = async (req: Request, res: Response) => {
+    try {
+        const products = await prisma.product.findMany({
+            select: {
+                id: true,
+                name: true,
+            }
+        });
+        res.status(200).json({ products });
+        return;
+    } catch (e) {
+        console.log(e);
+        res.status(401).json({ name: "getProductsForSearchErr" });
+        return;
+    }
+}
 export const getProductsCount = async (req: Request, res: Response) => {
   try {
     const products = await prisma.product.findMany();
     res.status(200);
-    res.json(products.length);
+      res.json({ length: products.length });
     return;
   } catch (e) {
     console.log(e);
@@ -67,7 +83,6 @@ export const create_product = async (req: any, res: Response) => {
   try {
     const url = req.protocol + "://" + req.get("host");
     const filtered_path = req.body.image.toLowerCase().split(" ").join("-");
-    console.log("before product create");
     const product = await prisma.product.create({
       data: {
         name: req.body.name,

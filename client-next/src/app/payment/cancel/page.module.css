@@ -1,0 +1,13 @@
+
+.h1_text {
+    font-size: 4rem;
+    font-weight: 500;
+    margin-bottom: 3rem;
+}
+
+.svg_cancel {
+    width: 5rem;
+    height: 5rem;
+    cursor: pointer;
+    color: red;
+}

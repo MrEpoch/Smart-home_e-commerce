@@ -4,10 +4,11 @@ import React, { Suspense, lazy } from "react";
 import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import PersonIcon from "@mui/icons-material/Person";
 import Link from "next/link";
+import { CartItem } from "@/types/Type";
 
-const Cart = lazy(() => import("./cart__modal"));
+const Cart = lazy(() => import("@/components/Cart__modal_client"));
 
-export default function Header(): React.ReactElement {
+export default function Header({ cart_items }: { cart_items: CartItem[] }): React.ReactElement {
   return (
     <Navbar
       collapseOnSelect
@@ -45,7 +46,7 @@ export default function Header(): React.ReactElement {
               </button>
             </Link>
             <Suspense fallback={<div>Loading...</div>}>
-              <Cart />
+              <Cart cart_items={cart_items} />
             </Suspense>
           </Nav>
         </Navbar.Collapse>

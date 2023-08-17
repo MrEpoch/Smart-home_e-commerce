@@ -34,7 +34,7 @@ router.post(
   create_admin_user,
 );
 
-router.get("/uploadToken", (req, res, next) => { console.log("before upload create"); next() },create_upload_token); 
+router.get("/uploadToken", create_upload_token); 
 
 
 export default router;

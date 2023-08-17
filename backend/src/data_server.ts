@@ -3,7 +3,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { getProduct, getProducts, getProductsCount } from "./handlers/products";
+import { getProduct, getProducts, getProductsCount, getProductsForSearch } from "./handlers/products";
 import { protect_upload_api_route } from "./modules/auth";
 import { upload } from "./handlers/image_upload";
 import { Multer } from "multer";
@@ -43,6 +43,7 @@ app.post("/server/data/upload-img", protect_upload_api_route, upload.single("ima
       return;
   }
 });
+app.get("/server/data/productSearch", getProductsForSearch);
 
 app.get("/server/data", getProducts);
 app.get("/server/data/product/:id", getProduct);

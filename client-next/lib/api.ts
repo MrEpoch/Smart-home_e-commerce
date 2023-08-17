@@ -6,12 +6,12 @@ export async function addToCart(product: any) {
         const check_cookie = cookies().get("cart");
         product.quantity = 1;
          if (!check_cookie) {
-           cookies().set("cart", JSON.stringify([product]));
-           revalidatePath("/*");
+           cookies().set("cart", JSON.stringify([product]));  
+           revalidatePath("/");
+           revalidatePath("/shop");
            return [product];
          } else {
              let cart = JSON.parse(check_cookie?.value);
-             console.log(cart);
              const check_cart = cart.find((item: any) => item.id === product.id);
              if (check_cart) {
                  check_cart.quantity += 1;
@@ -20,7 +20,8 @@ export async function addToCart(product: any) {
                  cart.push(product);
              }    
              cookies().set("cart", JSON.stringify(cart));
-             revalidatePath("/*");
+             revalidatePath("/");
+             revalidatePath("/shop");
              return cart;
         }
 }

@@ -2,8 +2,7 @@ import Client__page from "./page_client";
 
 const getProductsLength = async () => {
     const response = await fetch("http://165.232.120.122/server/product/length");
-    const data = await response.json();
-    return Math.floor(data / 10) + 1;
+    return Math.floor(typeof response === "number" ? response : 0 / 10) + 1;
 }
 
 const getProducts = async () => {
@@ -18,7 +17,7 @@ export default async function Page() {
 
     return (
         <div className="text-center container text-lg-start h-100">
-        {count && <Client__page pages={count} data={products} />}
+            {count && <Client__page pages={count} data={products} />}
         </div>
     )
 }

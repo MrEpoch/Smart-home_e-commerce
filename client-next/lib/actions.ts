@@ -70,7 +70,6 @@ export async function Payment(form: any): Promise<void | string> {
     let path = "";
     try {
         const cookie = await getCart();
-        console.log(cookie);
         const payment_data = await fetch('http://165.232.120.122/server/data/payment/', {
             method: 'POST',
             headers: {

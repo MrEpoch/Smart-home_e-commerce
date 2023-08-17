@@ -2,8 +2,10 @@ import React, { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Display_products from "@/components/Display_products";
 import Link from "next/link";
+import css from "./page.module.css";
+import InfoCard from "@/components/InfoCard";
 
-export default function Main__home(): React.ReactElement {
+export default async function Main__home() {
 
     const data = [
           {
@@ -33,20 +35,9 @@ export default function Main__home(): React.ReactElement {
     <div className="container-fluid main__home__container">
       <div className="main__home__popular__container">
       {data.map((item, index) => (
-          <Link href="/shop" key={index} className="main__home__popular card">  
-            <Image
-              width={300}
-              height={250}
-              className="card-img main__home__popular-img"
-              src={item.image}
-              alt={item.name + " image"}
-            />
-            <div className="card-img-overlay main__home__popular-ImgOverlay">
-              <h5 className="card-title main__home__popular__title">
-                {item.name}
-              </h5>
-            </div>
-        </Link>
+          <Suspense key={index} fallback={<div className={css.skeleton}></div>}>
+            <InfoCard item={item} />
+          </Suspense>
         ))}
       </div>
       <Display_products skip={0} />

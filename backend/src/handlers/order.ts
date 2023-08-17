@@ -62,9 +62,6 @@ export const createOrder = async (
 ) => {
     try {
     const orders_client = req.body.order;
-    const items_count = orders_client.length;
-    console.log(orders_client);
-    console.log(req.body.order);
     const pure_product = await mapOverOrders(orders_client);
     const orders = orders_client.map((item: any) => {
         const product = pure_product.find((product: any) => product.id === item.id);
@@ -77,8 +74,6 @@ export const createOrder = async (
             quantity: item.quantity,
         };
     });
-
-    console.log(orders);
 
     const session = await stripe.checkout.sessions.create(
       {
