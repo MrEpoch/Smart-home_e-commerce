@@ -28,7 +28,6 @@ export async function checkAuth() {
 }
 
 export default async function Page() {
-    await checkAuth();
     const account = await getAccount();
 
     return (

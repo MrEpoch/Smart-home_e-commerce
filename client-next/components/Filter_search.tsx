@@ -4,6 +4,8 @@ import { Autocomplete, TextField } from "@mui/material"
 import Product_card from "@/components/Product_card"
 import { Product, ProductContextType } from "@/types/Type";
 import { useState } from "react";
+import Link from 'next/link';
+import css from "@/styles/Home.module.css";
 
 export default function Shop__page_filter({ products, search }: { products: Product[], search: any }): React.JSX.Element {
 
@@ -17,6 +19,7 @@ export default function Shop__page_filter({ products, search }: { products: Prod
         }
         return false;
       }
+    console.log(search);
 
 
   
@@ -49,6 +52,9 @@ export default function Shop__page_filter({ products, search }: { products: Prod
                     autoHighlight
                     options={search}
                     getOptionLabel={(option: Product) => option.name}
+                    renderOption={(props, option) => (
+                        <Link className={css.link_search} href={`/product/${option.id}`}>{option.name}</Link>
+                    )}
                     renderInput={(params) => (
                         <TextField
                             {...params}

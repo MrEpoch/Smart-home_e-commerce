@@ -38,9 +38,9 @@ export default async function Main__home() {
             <InfoCard item={item} />
           </Suspense>
         ))}
-      </div>
-      <Display_products skip={0} />
-      <Link href="/shop">More</Link>
+     </div>
+     <Display_products skip={0} />
+     <Link href="/shop">More</Link>
     </div>
   );
 }

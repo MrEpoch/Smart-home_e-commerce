@@ -75,8 +75,20 @@
 .modal__container {
 }
 
+.skeleton_container {
+    margin-top: 5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
 .skeleton {
   animation: skeleton-loading 1s linear infinite alternate;
+  max-width: 370px;
+  width: 100%;
+  min-height: 400px;
 }
 
 @keyframes skeleton-loading {
@@ -101,4 +113,15 @@
 
 .skeleton-footer {
   width: 30%;
+}
+
+.link_search {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
 }

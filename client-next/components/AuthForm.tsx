@@ -4,6 +4,7 @@ import { SignUp, LogIn } from "@/lib/actions";
 import { useState } from "react";
 import Link from "next/link";
 import { Alert } from "@mui/material";
+import css from "@/styles/Auth.module.css";
 
 const signup_content = {
     linkurl: "/login",
@@ -69,7 +70,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" } ) {
             <div className="text-center">
                 <h1 className="mt-5" style={{ fontSize: "4rem" }}>{content.header}</h1>
             </div>
-            <Alert onClose={() => setError("")} severity="error" className="w-100">{error}</Alert>
+            {error.length > 0 && <Alert onClose={() => setError("")} severity="error" className="w-100">{error}</Alert>}
             <form action={mode === "signup" ? client_check__register : client_check__login} className="d-flex flex-column justify-content-center align-content-center w-100 pb-4 h-75">
                 {mode === "signup" && (
                     <div className="mb-8 d-flex justify-content-between">
@@ -99,8 +100,8 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" } ) {
                         </div>
                     )}
                 </div>
-                <div className="mb-8">
-                    <button type="submit" className="btn btn-primary w-100">{content.buttonText}</button>
+                <div className="mb-8 d-flex justify-content-center">
+                    <button type="submit" className="p-3 btn btn-primary">{content.buttonText}</button>
                 </div>
         </form>
             <div className="mb-8">
