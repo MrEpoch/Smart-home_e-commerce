@@ -6,7 +6,10 @@ export default async function middleware(req , res) {
         pathname.startsWith("/userpage")
     ) {
         const token = req.cookies.get("token");
-        if (!token) return NextResponse.redirect("/login");
+        if (!token) {
+            req.nextUrl.pathname = "/login";
+            return NextResponse.redirect(req.nextUrl);
+        }    
     }
     
     return NextResponse.next();

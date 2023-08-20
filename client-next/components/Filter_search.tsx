@@ -7,9 +7,10 @@ import { useState } from "react";
 import Link from 'next/link';
 import css from "@/styles/Home.module.css";
 
-export default function Shop__page_filter({ products, search }: { products: Product[], search: any }): React.JSX.Element {
+export default function Shop__page_filter({ products, search }: { products: Product[], search: any }): React.ReactElement {
 
       const [filter_condition, setFilter_condition] = useState<"all" | "locks" | "cameras" | "doorbells" | "lights" | "thermostats">("all");
+      const [searchData, setSearchData] = useState<Product[]>(products || []);
 
       function filter_products(product: Product): boolean {
         if (product.category === filter_condition) {
@@ -19,10 +20,6 @@ export default function Shop__page_filter({ products, search }: { products: Prod
         }
         return false;
       }
-    console.log(search);
-
-
-  
 
     return (
      <div className="products__section">
@@ -49,20 +46,21 @@ export default function Shop__page_filter({ products, search }: { products: Prod
             </div>
             <div className="products__section__filters__search">
                 <Autocomplete 
-                    autoHighlight
-                    options={search}
-                    getOptionLabel={(option: Product) => option.name}
+                    options={search ?? [{name: "Loading..."}]}
                     renderOption={(props, option) => (
-                        <Link className={css.link_search} href={`/product/${option.id}`}>{option.name}</Link>
+                        <Link key={option.id} className={css.link_search} href={`/product/${option.id ?? option.name}`}>{option.name}</Link>
                     )}
+                    id="search-auto"
+                    getOptionLabel={(option: any) => option.name}
                     renderInput={(params) => (
                         <TextField
+                            key={params.id}
                             {...params}
+                            id="searchtext"
                             label="Search products"
-                            variant="outlined"
                             inputProps={{
                                 ...params.inputProps,
-                                autoComplete: "new-password",
+                                type: 'search',
                             }}
                         />)
                     }

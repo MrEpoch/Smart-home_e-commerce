@@ -3,7 +3,7 @@ import "./page.css";
 
 const getProduct = async (productId: string) => {
     try {
-        const response = await fetch("http://165.232.120.122/server/data/" + productId, { next: { revalidate: 60 * 5 } });
+        const response = await fetch("http://165.232.120.122/server/data/product/" + productId, { next: { revalidate: 60 * 5 } });
         const data = await response.json();
         return data;
     } catch (error) {    

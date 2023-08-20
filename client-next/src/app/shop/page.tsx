@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import Client__page from "./page_client";
+import Loading from "./loading";
 
 const getProductsLength = async () => {
     const response = await fetch("http://165.232.120.122/server/product/length");
@@ -11,13 +13,22 @@ const getProducts = async () => {
     return data;
 }
 
+const getSearchProducts = async () => {
+    const response = await fetch("http://165.232.120.122/server/data/productSearch", { next: { revalidate: 0 }} );
+    const data = await response.json();
+    return data.products;
+}
+
 export default async function Page() {
     const count = await getProductsLength();
     const products = await getProducts();
+    const search = await getSearchProducts(); 
 
     return (
-        <div className="text-center container text-lg-start h-100">
-            {count && <Client__page pages={count} data={products} />}
+        <div className="text-center container text-lg-start w-100 h-100">
+            <Suspense fallback={<Loading />}>
+                {count && <Client__page pages={count} search={search} data={products} />}
+            </Suspense>
         </div>
     )
 }

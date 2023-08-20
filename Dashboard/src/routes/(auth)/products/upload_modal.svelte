@@ -44,6 +44,7 @@
                 body: data
             });
 
+            closeModal();
             return;
         } catch (error) {
             console.log(error);

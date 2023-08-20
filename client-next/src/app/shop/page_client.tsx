@@ -4,7 +4,7 @@ import { Product } from "@/types/Type";
 import { Pagination } from "@mui/material";
 import React, { useState } from "react";
 
-export default function Client__page({ data, pages }: { data: Product[], pages: number }) {
+export default function Client__page({ data, pages, search }: { data: Product[], pages: number, search: any }) {
 
     const [products, setProducts] = useState<Product[]>(data);
 
@@ -22,7 +22,7 @@ export default function Client__page({ data, pages }: { data: Product[], pages: 
 
     return (
         <div className="mt-5 mb-5">
-            <Display_products data={products} />
+            <Display_products search={search} data={products} />
             <Pagination className="d-flex justify-content-center" count={pages} onChange={handleChange} variant="outlined" shape="rounded" />            
         </div>
     )
