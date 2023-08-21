@@ -23,10 +23,10 @@ export default function Header({ cart_items }: { cart_items: CartItem[] }): Reac
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Link className="navbar__links" href="/">
+            <Link className="navbar__links header__link__styled" href="/">
               Home
             </Link>
-            <Link className="navbar__links" href="/shop">
+            <Link className="navbar__links header__link__styled" href="/shop">
               Shop
             </Link>
             <NavDropdown title="" id="collasible-nav-dropdown">

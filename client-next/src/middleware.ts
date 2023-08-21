@@ -5,7 +5,7 @@ export default async function middleware(req , res) {
     if (
         pathname.startsWith("/userpage")
     ) {
-        const token = req.cookies.get("token");
+        const token = req.cookies.get("refresh_token");
         if (!token) {
             req.nextUrl.pathname = "/login";
             return NextResponse.redirect(req.nextUrl);

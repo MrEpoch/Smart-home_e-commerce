@@ -28,6 +28,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" } ) {
     const [error, setError] = useState("");
 
     async function client_check__register(data: FormData) {
+        error.length > 0 && setError("");
         if (data.get("password")?.toString().trim() !== data.get("confirmPassword")?.toString().trim()) {
             setError("Passwords do not match");
             return false;
@@ -40,6 +41,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" } ) {
     }
 
     async function client_check__login(data: FormData) {
+        error.length > 0 && setError("");
         switch (data.get("email")?.toString().trim()) {
             case "":
                 setError("Email cannot be empty");
@@ -66,46 +68,46 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" } ) {
     }
 
     return (
-        <div className="text-center container text-lg-start d-flex flex-column justify-content-center" style={{ height: "100svh" }}>
+        <div className="text-center container text-lg-start d-flex flex-column align-content-center justify-content-center h-full">
             <div className="text-center">
-                <h1 className="mt-5" style={{ fontSize: "4rem" }}>{content.header}</h1>
+                <h1 className="mt-3" style={{ fontSize: "4rem" }}>{content.header}</h1>
             </div>
             {error.length > 0 && <Alert onClose={() => setError("")} severity="error" className="w-100">{error}</Alert>}
-            <form action={mode === "signup" ? client_check__register : client_check__login} className="d-flex flex-column justify-content-center align-content-center w-100 pb-4 h-75">
-                {mode === "signup" && (
-                    <div className="mb-8 d-flex justify-content-between">
-                        <div className="form-group mb-5">
-                            <label htmlFor="FirstName">First Name</label>
-                            <input type="text" name="firstName" id="firstName" className="form-control" />
+            <div className={css.form_container}>
+                <form action={mode === "signup" ? client_check__register : client_check__login} className={css.form_styling + " d-flex flex-column justify-content-center align-content-center w-100 h-100"}>
+                        {mode === "signup" && (
+                            <>
+                            <div className="form-group">
+                                <label htmlFor="FirstName">First Name</label>
+                                <input type="text" name="firstName" id="firstName" className="form-control" />
+                            </div>
+                            <div className="form-group ">
+                                <label htmlFor="lastName">Last Name</label>
+                                <input type="text" name="lastName" id="lastName" className="form-control" />
+                            </div>
+                            </>
+                        )}
+                        <div className="form-group">
+                            <label htmlFor="email">Email</label>
+                            <input type="email" name="email" id="email" className="form-control" />
                         </div>
-                        <div className="form-group mb-5">
-                            <label htmlFor="lastName">Last Name</label>
-                            <input type="text" name="lastName" id="lastName" className="form-control" />
-                        </div>
-                    </div>
-                )}
-                <div className="mb-8">
-                    <div className="form-group mb-5">
-                        <label htmlFor="email">Email</label>
-                        <input type="email" name="email" id="email" className="form-control" />
-                    </div>
-                    <div className="form-group mb-5">
-                        <label htmlFor="password">Password</label>
-                        <input type="password" name="password" id="password" className="form-control" />
-                    </div>
-                    {mode === "signup" && (
-                        <div className="form-group mb-5">
-                            <label htmlFor="confirmPassword">Confirm Password</label>
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
                             <input type="password" name="password" id="password" className="form-control" />
                         </div>
-                    )}
-                </div>
-                <div className="mb-8 d-flex justify-content-center">
-                    <button type="submit" className="p-3 btn btn-primary">{content.buttonText}</button>
-                </div>
-        </form>
-            <div className="mb-8">
-                <Link href={content.linkurl}>{content.linkText}</Link> 
+                        {mode === "signup" && (
+                            <div className="form-group">
+                                <label htmlFor="confirmPassword">Confirm Password</label>
+                                <input type="password" name="confirmPassword" id="password" className="form-control" />
+                            </div>
+                        )}
+                    <div className="d-flex justify-content-center">
+                        <button type="submit" className={css.button_submit_style}>{content.buttonText}</button>
+                    </div>
+                </form>
+            </div>
+            <div className="mb-2 text-center">
+                <Link className={css.link_style} href={content.linkurl}>{content.linkText}</Link> 
             </div>
         </div>
     )

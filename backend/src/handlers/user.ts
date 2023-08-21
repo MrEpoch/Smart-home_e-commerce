@@ -9,10 +9,12 @@ export const get_user = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const user = await prisma.user.findMany({
+    const user = await prisma.user.findUnique({
       where: {
-        id: req.body.id,
-        role: "user",
+        id_role: {
+            id: req.body.id,
+            role: "user",
+        }
       },
     });
     if (!user) {
@@ -34,10 +36,12 @@ export const get_admin = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const user = await prisma.user.findMany({
+    const user = await prisma.user.findUnique({
       where: {
-        id: req.body.id,
-        role: "admin",
+        id_role: {
+            id: req.body.id,
+            role: "admin",
+        }
       },
     });
     if (!user) {

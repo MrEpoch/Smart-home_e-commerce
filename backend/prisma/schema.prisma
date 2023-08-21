@@ -25,6 +25,8 @@ model User {
   updatedAt       DateTime         @updatedAt
   role            role             @default(user)
   orders          Order[]
+
+  @@unique([id, role])
 }
 
 model refresh_token {

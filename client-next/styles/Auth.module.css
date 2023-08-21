@@ -18,3 +18,52 @@
     transform: scale(1.05);
     transition: all 0.3s ease-in-out;
 }
+
+.form_container {
+    width: 100%;
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form_styling {
+    padding: 4rem;
+    max-width: 500px;
+    width: 100%;
+    gap: 3rem;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.link_style {
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.link_style:hover {
+    color: #000;
+    text-decoration: underline;
+    transition: all 0.3s ease-in-out;
+}
+
+.button_submit_style {
+    width: 100%;
+    max-width: 200px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: #000;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
